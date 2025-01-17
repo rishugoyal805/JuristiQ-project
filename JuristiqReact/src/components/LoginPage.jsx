@@ -1,21 +1,31 @@
 import  { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
 function LoginPage() {
+  const navigate= useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
     console.log('Email:', email);
     console.log('Password:', password);
+    navigate('/home'); 
+  };
+  
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    console.log('Email:', email);
+    console.log('Password:', password);
+    navigate('/signUp'); 
   };
 
   return (
     <div className="login-container">
       <div className="login-box">
 
-        <form onSubmit={handleSubmit}>
+        <form >
           <label>Email</label>
           <input
             type="email"
@@ -31,8 +41,8 @@ function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <a href="#" className="forgot-password">Forgot password?</a>
-          <button type="submit" className="login-button">Sign In</button>
-          <button type="submit" className="login-button">Sign Up</button>
+          <button type="submit" className="login-button" onClick={handleSignIn}>Sign In</button>
+          <button type="submit" className="login-button" onClick={handleSignUp}>Sign Up</button>
         </form>
       </div>
     </div>
