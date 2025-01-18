@@ -6,7 +6,7 @@ import LoginPage from './components/LoginPage'
 import SignUp from './components/SignUp'
 import NoPage from './components/SignUp'
 
-const router = createBrowserRouter(
+const router = createBrowserRouter([
   {
     path: "/",
     element: <LoginPage/>
@@ -23,7 +23,7 @@ const router = createBrowserRouter(
     path: "*",
     element: <NoPage/>
   }
-
+]
 )
 
 function App() {

@@ -1,0 +1,86 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #e5e5e5; 
+    color: black; 
+}
+
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    background-color: #000;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    height: 100vh; 
+    width: 250px; 
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); 
+    position: fixed; 
+    top: 0;
+    left: 0;
+}
+
+.logo {
+    font-size: 32px; 
+    color: #fff; 
+    font-weight: bold; 
+    margin-bottom: 20px; 
+    text-align: center;
+}
+
+.search {
+    width: 100%; 
+    padding: 10px; 
+    margin: 15px 0; 
+    border: 1px solid transparent; 
+    border-radius: 20px; 
+    background-color: #fff; 
+    color: #000; 
+    font-size: 14px;
+    transition: border 0.3s ease; 
+}
+
+.list-items {
+    color: #fff; 
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+    width: 100%; 
+}
+
+.list-items li {
+    padding: 10px 15px; 
+    font-size: large;
+    margin: 40px 0; 
+    background-color: transparent; 
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.list-items li:hover {
+    background-color: #555; 
+    color: #fff; 
+    border-radius: 5px; 
+}
+
+.logout-button{
+    border: none;
+    background-color: black;
+    margin: 10px;
+    color: white;
+    font-size:large;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+}
+
+hr {
+    border: none;               
+    height: 2px;               
+    background-color: white;    
+    margin: 10px 0;             
+    width: 80%;                 
+    align-self: center;         
+}

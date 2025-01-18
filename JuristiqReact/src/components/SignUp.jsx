@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import './SignUp.css';
 
 function SignUp() {
     const [name, setName]= useState('');
@@ -20,38 +21,38 @@ function SignUp() {
   return (
     <div className="SignUp-container">
     <div className="SignUp-box">
-      <form >
+      <form method="post" >
         <label>Name</label>
         <input
-          type="text"
+          type="text" required
           placeholder="Enter your Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <label>Registration ID</label>
         <input
-          type="number"
+          type="number" required
           placeholder="Enter Registration ID"
           value={regsID}
           onChange={(e) => setRegsID(e.target.value)}
         />
         <label>Email</label>
           <input
-            type="email"
+            type="email" required
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         <label>Phone No.</label>
         <input
-          type="number"
+          type="number" required
           placeholder="Enter Phone No."
           value={PhoneNo}
           onChange={(e) => setPhoneNo(e.target.value)}
         />
         <label>Create Password</label>
         <input
-          type="password"
+          type="password" required
           placeholder="Enter Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
