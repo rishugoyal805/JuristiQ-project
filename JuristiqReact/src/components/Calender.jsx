@@ -3,7 +3,7 @@
 
 function Calender() {
   return (
-    <div>Calender</div>
+    <div className="calender">Calender</div>
   )
 }
 

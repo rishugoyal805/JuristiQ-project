@@ -2,7 +2,7 @@
 
 function Headlines() {
   return (
-    <div>Headlines</div>
+    <div className="headlines">Headlines</div>
   )
 }
 

@@ -2,7 +2,7 @@
 
 function PendingTasks() {
   return (
-    <div>PendingTasks</div>
+    <div className="tasks">PendingTasks</div>
   )
 }
 

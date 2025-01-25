@@ -41,26 +41,26 @@ body {
     font-size: 14px;
     transition: border 0.3s ease; 
 }
-
-.list-items {
-    color: #fff; 
-    list-style-type: none; 
-    padding: 0;
-    margin: 0;
-    width: 100%; 
+.options{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.list-items li {
-    padding: 10px 15px; 
+.options button {
+    font-family: 'Times New Roman', Times, serif;
+    border: none;
+    color: white;
+    padding: 15px ; 
     font-size: large;
-    margin: 40px 0; 
+    margin: 10px 0; 
     background-color: transparent; 
     text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease; 
+    transition: background-color 0.3s ease; 
 }
 
-.list-items li:hover {
+.options button:hover {
     background-color: #555; 
     color: #fff; 
     border-radius: 5px; 
@@ -68,8 +68,9 @@ body {
 
 .logout-button{
     border: none;
-    background-color: black;
     margin: 10px;
+    background-color: black;
+    padding: 10px;
     color: white;
     font-size:large;
     font-family: 'Times New Roman', Times, serif;
@@ -83,4 +84,10 @@ hr {
     margin: 10px 0;             
     width: 80%;                 
     align-self: center;         
+}
+
+.logout-button:hover{
+    background-color: #555; 
+    color: #fff; 
+    border-radius: 5px; 
 }

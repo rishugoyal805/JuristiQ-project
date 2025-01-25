@@ -1,10 +1,14 @@
-import './App.css'
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Home from './components/Home'
 import LoginPage from './components/LoginPage'
 import SignUp from './components/SignUp'
 import NoPage from './components/SignUp'
+import MyCases from './components/MyCases'
+import Fees from './components/Fees'
+import Clients from './components/Clients'
+import Profile from './components/Profile'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +22,26 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Home/>
+  },
+  {
+    path: "/myCases",
+    element: <MyCases/>
+  },
+  {
+    path: "/fees",
+    element: <Fees/>
+  },
+  {
+    path: "/clients",
+    element: <Clients/>
+  },
+  // {
+  //   path: "/clients/addClient",
+  //   element: <AddClients/>
+  // },
+  {
+    path: "/profile",
+    element: <Profile/>
   },
   {
     path: "*",

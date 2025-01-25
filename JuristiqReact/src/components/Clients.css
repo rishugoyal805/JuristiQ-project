@@ -1,0 +1,65 @@
+.add-client-button {
+    border: none;
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    bottom: 20px;
+    border-radius: 50%;
+    right: 20px;
+    z-index: 1000;
+    background-color: black;
+    padding: 10px;
+    color: white;
+    font-size:larger;
+    font-weight: bolder;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+}
+
+.client-form{
+    margin-left: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    margin-top: 50px;
+}
+.client-box{
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+label {
+    font-size: 0.9rem;
+    text-align: left;
+  }
+  
+input {
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.submit-client{
+    padding: 0.5rem;
+    background-color: black;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.submit-client:hover {
+    background-color: #1d1c1c;
+}
