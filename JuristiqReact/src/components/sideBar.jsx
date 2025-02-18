@@ -24,6 +24,10 @@ function SideBar() {
     console.log("Profile clicked");
     navigate('/profile');
   }
+  const handleLogout=()=>{
+    console.log("Logout clicked")
+    navigate('/');
+  }
 
   return (
     <div className="sideBar">
@@ -38,7 +42,7 @@ function SideBar() {
             
         </div>
         <hr/>
-        <button className="logout-button">Log Out</button>
+        <button className="logout-button" onClick={handleLogout}>Log Out</button>
     </div>
   )
 }

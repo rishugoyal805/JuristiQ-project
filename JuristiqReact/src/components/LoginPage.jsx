@@ -26,7 +26,7 @@ function LoginPage() {
     <div className="login-container">
       <div className="login-box">
 
-        <form method='post'>
+        <form >
           <label>Email</label>
           <input
             type="email" required
