@@ -1,72 +1,79 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import SideBar from "./sideBar";
 import "./Clients.css";
 
 function Clients() {
   const [showForm, setShowForm] = useState(false);
-  const [clientDetails, setClientDetails] = useState(null);
+  const [clients, setClients] = useState([]);
 
-  const handleClick = () => {
-    setShowForm(true);
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  const fetchClients = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/clients");
+      setClients(response.data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const details = {
-      name: formData.get("clientName"),
-      email: formData.get("email"),
+    const newClient = {
+      client_name: formData.get("clientName"),
       phone: formData.get("phone"),
+      case_ref_no: formData.get("case-ref-no"),
     };
-    setClientDetails(details);
-    setShowForm(false); // Hide the form after submission
+
+    try {
+      await axios.post("http://localhost:5000/api/clients", newClient);
+      fetchClients(); // Refresh client list
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error adding client:", error);
+    }
   };
 
   return (
     <div>
       <SideBar />
-        <button className="add-client-button" onClick={handleClick}>+</button>
-    
+      <button className="add-client-button" onClick={() => setShowForm(true)}>
+        +
+      </button>
+
       {showForm && (
-    <div className="client-form">
-        <div className="client-box">
+        <div className="client-form">
           <form onSubmit={handleFormSubmit}>
-            <label>
-              Client Name:
-            </label><br/>
+            <label>Client Name:</label>
             <input type="text" name="clientName" required />
-            <br />
-            <label>
-              Email:
-            </label><br/>
-            <input type="email" name="email" required />
-            <br />
-            <label>
-              Phone:
-            </label><br/>
+            <label>Phone:</label>
             <input type="tel" name="phone" required />
-            <br />
-            <button  className="submit-client" type="submit">Submit</button>
+            <label>Case ref no.:</label>
+            <input type="number" name="case-ref-no" required />
+            <button type="submit">Submit</button>
           </form>
         </div>
-    </div>
       )}
 
       {/* Card Section */}
-      {clientDetails && (
-        <div className="client-card">
+      {clients.map((client) => (
+        <div className="client-card" key={client.case_ref_no}>
           <h2>Client Details</h2>
           <p>
-            <strong>Name:</strong> {clientDetails.name}
+            <strong>Name:</strong> {client.client_name}
           </p>
           <p>
-            <strong>Email:</strong> {clientDetails.email}
+            <strong>Phone:</strong> {client.phone}
           </p>
           <p>
-            <strong>Phone:</strong> {clientDetails.phone}
+            <strong>Case Ref No.:</strong> {client.case_ref_no}
           </p>
         </div>
-      )}
+      ))}
     </div>
   );
 }
