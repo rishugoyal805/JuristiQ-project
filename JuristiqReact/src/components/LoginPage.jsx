@@ -1,5 +1,5 @@
-import  { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginPage.css";
 
@@ -35,7 +35,8 @@ function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-box">
-        <form>
+        {/* ✅ Using onSubmit to ensure required fields are validated */}
+        <form onSubmit={handleSignIn}>
           <label>Email</label>
           <input
             type="email"
@@ -53,7 +54,7 @@ function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <a href="#" className="forgot-password">Forgot password?</a>
-          <button type="submit" className="login-button" onClick={handleSignIn}>
+          <button type="submit" className="login-button">
             Sign In
           </button>
           <button type="button" className="login-button" onClick={handleSignUp}>
@@ -66,6 +67,5 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
 
 
