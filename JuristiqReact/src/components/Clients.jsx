@@ -13,7 +13,7 @@ function Clients() {
 
   const fetchClients = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/clients");
+      const response = await axios.get("http://localhost:3000/clients"); 
       setClients(response.data);
     } catch (error) {
       console.error("Error fetching clients:", error);
@@ -26,15 +26,16 @@ function Clients() {
     const newClient = {
       client_name: formData.get("clientName"),
       phone: formData.get("phone"),
-      case_ref_no: formData.get("case-ref-no"),
+      case_ref_no: formData.get("case_ref_no"),
     };
 
     try {
-      await axios.post("http://localhost:5000/api/clients", newClient);
+      await axios.post("http://localhost:3000/createclient", newClient); 
       fetchClients(); // Refresh client list
       setShowForm(false);
     } catch (error) {
       console.error("Error adding client:", error);
+      alert("Error adding client. Try again.");
     }
   };
 
@@ -47,21 +48,21 @@ function Clients() {
 
       {showForm && (
         <div className="client-form">
-          <form onSubmit={handleFormSubmit}>
+          <form className="client-box" onSubmit={handleFormSubmit}>
             <label>Client Name:</label>
             <input type="text" name="clientName" required />
             <label>Phone:</label>
             <input type="tel" name="phone" required />
             <label>Case ref no.:</label>
-            <input type="number" name="case-ref-no" required />
-            <button type="submit">Submit</button>
+            <input type="number" name="case_ref_no" required />
+            <button className="submit-client" type="submit">Submit</button>
           </form>
         </div>
       )}
 
       {/* Card Section */}
-      {clients.map((client) => (
-        <div className="client-card" key={client.case_ref_no}>
+      {clients.map((client, index) => (
+        <div className="client-card" key={index}>
           <h2>Client Details</h2>
           <p>
             <strong>Name:</strong> {client.client_name}

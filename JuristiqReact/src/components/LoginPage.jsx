@@ -35,7 +35,6 @@ function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-box">
-        {/* ✅ Using onSubmit to ensure required fields are validated */}
         <form onSubmit={handleSignIn}>
           <label>Email</label>
           <input
