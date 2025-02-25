@@ -63,3 +63,79 @@ input {
 .submit-case:hover {
     background-color: #1d1c1c;
 }
+
+.table-container {
+    width: 90%;
+    margin: 20px auto;
+    min-height: 70vh; /* Ensures it takes most of the page initially */
+    display: flex;
+    align-items: center; /* Centers the table vertically when empty */
+    justify-content: center;
+  }
+  
+  table {
+    margin-left: 300px;
+    margin-top: 30px;
+    align-items: center; 
+    width: 77%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #f8f9fa; /* Light grey background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle 3D effect */
+    overflow: hidden;
+  }
+  
+  thead {
+    background: #e0e0e0; /* Slightly darker grey */
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  tbody tr:hover {
+    background: #eaeaea; /* Light hover effect */
+    transition: 0.3s;
+  }
+  
+  /* Buttons inside Actions column */
+  .edit-btn, .delete-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 2px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .edit-btn {
+    background: #007bff; /* Blue for Update */
+    color: white;
+  }
+  
+  .delete-btn {
+    background: #dc3545; /* Red for Delete */
+    color: white;
+  }
+  
+  .edit-btn:hover {
+    background: #0056b3;
+  }
+  
+  .delete-btn:hover {
+    background: #b22222;
+  }
+  
