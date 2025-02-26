@@ -9,7 +9,7 @@ const clientModel= require("./models/client");
  const moment = require('moment');
  const twilio = require('twilio');
   const cors = require("cors");
- app.use(cors({ origin: "http://localhost:5000" })); // Update with your frontend URL
+ app.use(cors({ origin: "http://localhost:5173", credentials: true })); // Update with your frontend URL
 
 const postModel= require("./models/post");
 const casesModel= require("./models/cases");
@@ -197,9 +197,7 @@ app.post("/verifyotp", async (req, res) => {
       res.status(200).send("OTP verified successfully");
     } else {
       console.log("Incorrect OTP");
-      await userModel.deleteOne({user });
-      res.status(400).send("Incorrect OTP");
-
+      await userModel.deleteOne({email });
     }
   } catch (error) {
     console.error("Error:", error);
