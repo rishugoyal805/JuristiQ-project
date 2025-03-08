@@ -1,0 +1,109 @@
+/* General Page Styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #e5e5e5; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Profile Container */
+.profile-container {
+    background: white;
+    width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    margin-left: 300px; /* Moves container to the right */
+}
+
+/* Profile Header */
+.profile-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 10px;
+}
+
+/* Profile Picture - Rounded & Centered */
+.profile-pic-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid black;
+    cursor: pointer;
+}
+
+/* Hide file input field */
+#file-input {
+    display: none;
+}
+
+/* Profile Information */
+.profile-info {
+    text-align: left;
+    font-size: 1rem;
+    color: black;
+    margin-bottom: 15px;
+    padding: 0 20px;
+}
+
+.profile-info p {
+    margin: 5px 0;
+}
+
+/* Case Statistics */
+.profile-stats {
+    text-align: left;
+    margin-top: 1rem;
+    padding: 0 20px;
+}
+
+.profile-stats h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+}
+
+.profile-stats p {
+    font-size: 1rem;
+    color: grey;
+    margin: 5px 0;
+}
+
+/* Edit Profile Button */
+.profile-actions {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.profile-button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: black;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.profile-button:hover {
+    background-color: #1d1c1c;
+}

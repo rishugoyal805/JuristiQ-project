@@ -1,6 +1,7 @@
 .main-content {
     display: flex;
     flex-direction: column; 
+    margin-left: 330px; /* Adjusted to avoid sidebar overlap */
     margin-right: 80px;
     margin-top: 30px;
     align-items: flex-end; 
@@ -11,14 +12,16 @@
 
 .upper-content {
     display: flex;
-    flex-direction: row; 
-    gap: 50px; 
+    flex-direction: row;
+    flex-wrap: wrap; /* Ensures responsiveness */
+    gap: 50px;
 }
 
 .calender, 
 .headlines {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
     height: 300px;
     width: 400px;
@@ -27,15 +30,25 @@
     padding: 20px;
     background-color: black;
     color: white;
+    overflow: hidden; /* Prevents content overflow */
 }
 
-.lower-content{
+/* Calendar adjustments */
+.calender .react-calendar {
+    width: 100%;
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+}
+
+/* Lower content adjustments */
+.lower-content {
     display: flex;
     align-items: center;
     flex-direction: column;
     height: 200px;
     margin-bottom: 30px;
-    width: 70%;
+    width: 95%;
     border-radius: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); 
     padding: 20px;

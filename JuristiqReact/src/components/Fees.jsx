@@ -1,81 +1,76 @@
 import SideBar from "./sideBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import './sideBar.css';
-import './Clients.css';
-
-
+import "./sideBar.css";
+import "./Fees.css";
 
 function Fees() {
   const [showForm, setShowForm] = useState(false);
   const [showTable, setShowTable] = useState(true);
-  const [cases, setCases] = useState([]);
-  const [editingCase, setEditingCase] = useState(null); // Track the case being edited
+  const [fees, setFees] = useState([]);
+  const [editingFee, setEditingFee] = useState(null);
 
   useEffect(() => {
-    fetchCases();
+    fetchFees();
   }, []);
 
-  const fetchCases = async () => {
+  const fetchFees = async () => {
     try {
-      const response = await axios.get("http://localhost:5173/getcases");
-      setCases(response.data);
+      const response = await axios.get("http://localhost:5173/getfees");
+      setFees(response.data);
     } catch (error) {
-      console.error("Error fetching cases:", error);
+      console.error("Error fetching fees:", error);
     }
   };
 
   const handleClick = () => {
     setShowForm(true);
     setShowTable(false);
-    setEditingCase(null);
+    setEditingFee(null);
   };
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const newCase = {
+    const feeData = {
       case_ref_no: formData.get("case_ref_no"),
-      caseTitle: formData.get("caseTitle"),
       clientName: formData.get("clientName"),
-      status: formData.get("status"),
-      next_hearing: formData.get("hearingDate"),
       fees: formData.get("totalFees"),
+      amount_paid: formData.get("amountpaid"),
       pending_fees: formData.get("pendingFees"),
+      payment_mode: formData.get("mode"),
+      due_date: formData.get("duedate"),
+      remarks: formData.get("remarks"),
     };
 
     try {
-      if (editingCase) {
-        // If editing, send a PUT request to update the case
-        await axios.put(`http://localhost:5173/updatecase/${editingCase.case_ref_no}`, newCase);
+      if (editingFee) {
+        await axios.put(`http://localhost:5173/updatefee/${editingFee.id}`, feeData);
       } else {
-        // If adding a new case, send a POST request
-        await axios.post("http://localhost:5173/createcase", newCase);
+        await axios.post("http://localhost:5173/createfee", feeData);
       }
-
       setShowForm(false);
       setShowTable(true);
-      fetchCases(); // Refresh table after add/update
+      fetchFees();
     } catch (error) {
-      console.error("Error adding/updating case:", error);
+      console.error("Error processing fee record:", error);
       alert("Error processing request. Try again.");
     }
   };
 
-  const handleDelete = async (case_ref_no) => {
-    if (!window.confirm("Are you sure you want to delete this case?")) return;
-
+  const handleDelete = async (feeId) => {
+    if (!window.confirm("Are you sure you want to delete this fee record?")) return;
     try {
-      await axios.delete(`http://localhost:5173/deletecase/${case_ref_no}`);
-      fetchCases(); // Refresh table after delete
+      await axios.delete(`http://localhost:5173/deletefee/${feeId}`);
+      fetchFees();
     } catch (error) {
-      console.error("Error deleting case:", error);
-      alert("Failed to delete case. Try again.");
+      console.error("Error deleting fee record:", error);
+      alert("Failed to delete record. Try again.");
     }
   };
 
-  const handleEdit = (caseItem) => {
-    setEditingCase(caseItem);
+  const handleEdit = (feeItem) => {
+    setEditingFee(feeItem);
     setShowForm(true);
     setShowTable(false);
   };
@@ -83,39 +78,37 @@ function Fees() {
   return (
     <div>
       <SideBar />
-      <button className="add-case-button" onClick={handleClick}>
-        +
-      </button>
+      <button className="add-fee-button" onClick={handleClick}>+</button>
 
       {showForm && (
-        <div className="case-form">
-          <form className="case-box" onSubmit={handleFormSubmit}>
-            <label>Case ref no.:</label>
-            <input type="number" name="case_ref_no" required defaultValue={editingCase?.case_ref_no} readOnly={!!editingCase} />
-
-            <label>Case Title:</label>
-            <input type="text" name="caseTitle" required defaultValue={editingCase?.caseTitle} />
+        <div className="fee-form">
+          <form className="fee-box" onSubmit={handleFormSubmit}>
+          <label>Case ref no.:</label>
+            <input type="number" name="case_ref_no" required defaultValue={editingFee?.case_ref_no} readOnly={!!editingFee} />
 
             <label>Client name:</label>
-            <input type="text" name="clientName" required defaultValue={editingCase?.clientName} />
-
-            <label>Status:</label>
-            <select name="status" required defaultValue={editingCase?.status}>
-              <option value="Pending">Pending</option>
-              <option value="Active">Active</option>
-            </select>
-
-            <label>Next hearing:</label>
-            <input type="date" name="hearingDate" required defaultValue={editingCase?.next_hearing} />
+            <input type="text" name="clientName" required defaultValue={editingFee?.clientName} />
 
             <label>Total fees:</label>
-            <input type="number" name="totalFees" required defaultValue={editingCase?.fees} />
+            <input type="number" name="totalFees" required defaultValue={editingFee?.fees} />
+
+            <label>Amount Paid:</label>
+            <input type="number" name="amountpaid" required defaultValue={editingFee?.amount_paid} />
 
             <label>Pending fees:</label>
-            <input type="number" name="pendingFees" required defaultValue={editingCase?.pending_fees} />
+            <input type="number" name="pendingFees" required defaultValue={editingFee?.pending_fees} />
+
+            <label>Payment mode:</label>
+            <input type="text" name="mode" required defaultValue={editingFee?.payment_mode} />
+
+            <label>Due Date:</label>
+            <input type="date" name="duedate" required defaultValue={editingFee?.due_date} />
+
+            <label>Remarks:</label>
+            <textarea name="remarks" defaultValue={editingFee?.remarks} />
 
             <button className="submit-case" type="submit">
-              {editingCase ? "Update" : "Submit"}
+              {editingFee ? "Update" : "Submit"}
             </button>
           </form>
         </div>
@@ -124,30 +117,32 @@ function Fees() {
       {showTable && (
         <table>
           <thead>
-            <tr>
+          <tr>
               <th>Case No.</th>
-              <th>Case Title</th>
               <th>Client Name</th>
-              <th>Status</th>
-              <th>Next Hearing</th>
               <th>Total Fees</th>
+              <th>Amount Paid</th>
               <th>Pending Fees</th>
+              <th>Payment Mode</th>
+              <th>Due Date</th>
+              <th>Remarks</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {cases.map((caseItem, index) => (
+            {fees.map((fee, index) => (
               <tr key={index}>
-                <td>{caseItem.case_ref_no}</td>
-                <td>{caseItem.caseTitle}</td>
-                <td>{caseItem.clientName}</td>
-                <td>{caseItem.status}</td>
-                <td>{caseItem.next_hearing}</td>
-                <td>{caseItem.fees}</td>
-                <td>{caseItem.pending_fees}</td>
+                <td>{fee.case_ref_no}</td>
+                <td>{fee.clientName}</td>
+                <td>{fee.fees}</td>
+                <td>{fee.amount_paid}</td>
+                <td>{fee.pending_fees}</td>
+                <td>{fee.payment_mode}</td>
+                <td>{fee.due_date}</td>
+                <td>{fee.remarks}</td>
                 <td>
-                  <button className="edit-btn" onClick={() => handleEdit(caseItem)}>Update</button>
-                  <button className="delete-btn" onClick={() => handleDelete(caseItem.case_ref_no)}>Delete</button>
+                  <button className="edit-btn" onClick={() => handleEdit(fee)}>Edit</button>
+                  <button className="delete-btn" onClick={() => handleDelete(fee.case_ref_no)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -158,4 +153,4 @@ function Fees() {
   );
 }
 
-export default Fees
+export default Fees;
