@@ -16,7 +16,7 @@ function MyCases() {
 
   const fetchCases = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getcases");
+      const response = await axios.get("http://localhost:5173/getcases");
       setCases(response.data);
     } catch (error) {
       console.error("Error fetching cases:", error);
@@ -45,10 +45,10 @@ function MyCases() {
     try {
       if (editingCase) {
         // If editing, send a PUT request to update the case
-        await axios.put(`http://localhost:3000/updatecase/${editingCase.case_ref_no}`, newCase);
+        await axios.put(`http://localhost:5173/updatecase/${editingCase.case_ref_no}`, newCase);
       } else {
         // If adding a new case, send a POST request
-        await axios.post("http://localhost:3000/createcase", newCase);
+        await axios.post("http://localhost:5173/createcase", newCase);
       }
 
       setShowForm(false);
@@ -64,7 +64,7 @@ function MyCases() {
     if (!window.confirm("Are you sure you want to delete this case?")) return;
 
     try {
-      await axios.delete(`http://localhost:3000/deletecase/${case_ref_no}`);
+      await axios.delete(`http://localhost:5173/deletecase/${case_ref_no}`);
       fetchCases(); // Refresh table after delete
     } catch (error) {
       console.error("Error deleting case:", error);

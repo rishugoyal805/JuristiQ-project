@@ -12,13 +12,15 @@ function Clients() {
   }, []);
 
   const fetchClients = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/clients"); 
-      setClients(response.data);
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
-  };
+  try {
+    const response = await axios.get("http://localhost:5173/clients"); 
+    console.log("Fetched Clients:", response.data); // Debugging
+    setClients(response.data); // Update state
+  } catch (error) {
+    console.error("Error fetching clients:", error);
+  }
+};
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ function Clients() {
     };
 
     try {
-      await axios.post("http://localhost:3000/createclient", newClient); 
+      await axios.post("http://localhost:5173/createclient", newClient); 
       fetchClients(); // Refresh client list
       setShowForm(false);
     } catch (error) {

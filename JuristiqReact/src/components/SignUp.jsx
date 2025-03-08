@@ -17,7 +17,7 @@ function SignUp() {
   // Send OTP to user's email
   const handleEmailSubmit = async () => {
     try {
-      await axios.post("http://localhost:3000/advocate", { email });
+      await axios.post("http://localhost:5173/advocate", { email });
       setOtpSent(true);
       alert("OTP sent to your email!");
     } catch (error) {
@@ -29,7 +29,7 @@ function SignUp() {
   // Verify OTP
   const handleOtpSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/verifyotp", { email, otp });
+      const response = await axios.post("http://localhost:5173/verifyotp", { email, otp });
       if (response.status === 200) {
         setOtpVerified(true);
         alert("OTP Verified! You can now create a password.");
@@ -37,6 +37,7 @@ function SignUp() {
     } catch (error) {
       alert("Invalid OTP. Try again.");
       console.error("OTP Verification error:", error);
+      window.location.reload(); // Reload the page if OTP is wrong
     }
   };
 
@@ -49,7 +50,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
+      const response = await axios.post("http://localhost:5173/register", {
         name,
         email,
         password,
