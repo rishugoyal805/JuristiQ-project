@@ -1,49 +1,82 @@
+/* Floating Add Client Button */
 .add-client-button {
     border: none;
     height: 50px;
     width: 50px;
     position: fixed;
     bottom: 20px;
-    border-radius: 50%;
     right: 20px;
+    border-radius: 50%;
     z-index: 1000;
     background-color: black;
     padding: 10px;
     color: white;
-    font-size:larger;
+    font-size: larger;
     font-weight: bolder;
     font-family: 'Times New Roman', Times, serif;
     cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
 }
 
-.client-form{
-    margin-left: 300px;
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-    margin-top: 50px;
+.add-client-button:hover {
+    background-color: #333;
 }
-.client-box{
+
+/* Overlay to blur background when form is open */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+/* Show overlay when form is active */
+.overlay.show {
+    display: block;
+}
+
+/* Centered Client Form (Popup) */
+.client-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background: white;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 320px;
+    display: none; /* Hidden by default */
+}
+
+/* Show form when active */
+.client-form.show {
+    display: block;
+}
+
+/* Form Styling */
+.client-box {
     text-align: center;
 }
+
 form {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-  }
-  
+    gap: 10px;
+}
+
 label {
     font-size: 0.9rem;
     text-align: left;
-  }
-  
+    font-weight: bold;
+}
+
 input {
     padding: 0.4rem;
     border: 1px solid #ccc;
@@ -51,8 +84,9 @@ input {
     font-size: 1rem;
 }
 
-.submit-client{
-    padding: 0.5rem;
+/* Submit Button */
+.submit-client {
+    padding: 0.6rem;
     background-color: black;
     color: white;
     font-family: 'Times New Roman', Times, serif;
@@ -60,11 +94,14 @@ input {
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
+
 .submit-client:hover {
     background-color: #1d1c1c;
 }
 
+/* Client Cards Container */
 .clients-container {
     display: flex;
     flex-wrap: wrap;
@@ -74,22 +111,42 @@ input {
     margin-left: 330px;
 }
 
+/* Client Card Design */
 .client-card {
     background: white;
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     width: 250px;
     text-align: center;
     border: 1px solid #ddd;
+    transition: transform 0.2s ease-in-out;
+}
+
+.client-card:hover {
+    transform: scale(1.03);
 }
 
 .client-card h2 {
     font-size: 1.2rem;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .client-card p {
     font-size: 1rem;
     margin: 5px 0;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .clients-container {
+        margin-left: 10px;
+        justify-content: center;
+    }
+
+    .client-form {
+        width: 90%;
+        padding: 15px;
+    }
 }
