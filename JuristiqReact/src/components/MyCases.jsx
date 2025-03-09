@@ -16,7 +16,7 @@ function MyCases() {
 
   const fetchCases = async () => {
     try {
-      const response = await axios.get("http://localhost:5173/getcases");
+      const response = await axios.get("http://localhost:3000/getcases");
       setCases(response.data);
     } catch (error) {
       console.error("Error fetching cases:", error);
@@ -33,22 +33,22 @@ function MyCases() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newCase = {
-      case_ref_no: formData.get("case_ref_no"),
+      case_ref_no: Number(formData.get("case_ref_no")),  // ✅ Convert to Number
       caseTitle: formData.get("caseTitle"),
       clientName: formData.get("clientName"),
       status: formData.get("status"),
       next_hearing: formData.get("hearingDate"),
-      fees: formData.get("totalFees"),
-      pending_fees: formData.get("pendingFees"),
+      fees: Number(formData.get("totalFees")),         // ✅ Convert to Number
+      pending_fees: Number(formData.get("pendingFees")) // ✅ Convert to Number
     };
 
     try {
       if (editingCase) {
         // If editing, send a PUT request to update the case
-        await axios.put(`http://localhost:5173/updatecase/${editingCase.case_ref_no}`, newCase);
+        await axios.put(`http://localhost:3000/updatecase/${editingCase.case_ref_no}`, newCase);
       } else {
         // If adding a new case, send a POST request
-        await axios.post("http://localhost:5173/createcase", newCase);
+        await axios.post("http://localhost:3000/createcase", newCase);
       }
 
       setShowForm(false);
@@ -64,7 +64,7 @@ function MyCases() {
     if (!window.confirm("Are you sure you want to delete this case?")) return;
 
     try {
-      await axios.delete(`http://localhost:5173/deletecase/${case_ref_no}`);
+      await axios.delete(`http://localhost:3000/deletecase/${case_ref_no}`);
       fetchCases(); // Refresh table after delete
     } catch (error) {
       console.error("Error deleting case:", error);
@@ -134,22 +134,22 @@ function MyCases() {
             </tr>
           </thead>
           <tbody>
-            {cases.map((caseItem, index) => (
-              <tr key={index}>
-                <td>{caseItem.case_ref_no}</td>
-                <td>{caseItem.caseTitle}</td>
-                <td>{caseItem.clientName}</td>
-                <td>{caseItem.status}</td>
-                <td>{caseItem.next_hearing}</td>
-                <td>{caseItem.fees}</td>
-                <td>{caseItem.pending_fees}</td>
-                <td>
-                  <button className="edit-btn" onClick={() => handleEdit(caseItem)}>Update</button>
-                  <button className="delete-btn" onClick={() => handleDelete(caseItem.case_ref_no)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {cases.map((caseItem, index) => (
+    <tr key={index}>
+      <td>{caseItem.case_ref_no}</td>
+      <td>{caseItem.caseTitle}</td>
+      <td>{caseItem.clientName}</td>
+      <td>{caseItem.status}</td>
+      <td>{new Date(caseItem.next_hearing).toLocaleDateString("en-GB")}</td>  {/* Formatted Date */}
+      <td>{caseItem.fees}</td>
+      <td>{caseItem.pending_fees}</td>
+      <td>
+        <button className="edit-btn" onClick={() => handleEdit(caseItem)}>Update</button>
+        <button className="delete-btn" onClick={() => handleDelete(caseItem.case_ref_no)}>Delete</button>
+      </td>
+    </tr>
+  ))}
+</tbody>
         </table>
       )}
     </div>
@@ -157,4 +157,5 @@ function MyCases() {
 }
 
 export default MyCases;
+
 
