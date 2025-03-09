@@ -108,6 +108,10 @@ app.get("/getcases", async (req, res) => {
  let contents= await userModel.find();
  res.send(contents);
  });
+ app.get('/toknowcl',async(req,res)=>{
+  let contents= await clientModel.find();
+  res.send(contents);
+  });
  app.get('/toknowc',async(req,res)=>{
   let contents= await casesModel.find();
   res.send(contents);
@@ -288,20 +292,55 @@ app.put("/updatecase/:case_ref_no", async (req, res) => {
     res.status(500).json({ success: false, message: "An error occurred while updating the case" });
   }
 });
-app.get("/getclient/:case_ref_no",async(req,res)=>{
-  const { case_ref_no } = req.params;
-  const clientDatabase = await clientModel.findOne({ case_ref_no });
-  res.send(clientDatabase);
+// Get client details by case reference number
+app.get("/clients/:case_ref_no", async (req, res) => {
+  try {
+    const { case_ref_no } = req.params;
+    const client = await clientModel.findOne({ case_ref_no });
+
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    res.json(client);
+  } catch (error) {
+    console.error("Error fetching client:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
-app.post("/createclient",async(req,res)=>{
-  const {client_name, phone, case_ref_no}= req.body;
-  let user = await clientModel.create({
-    client_name,
-    phone,
-    case_ref_no
+
+// Get all clients
+app.get("/clients", async (req, res) => {
+  try {
+    const clients = await clientModel.find();
+    res.json(clients);
+  } catch (error) {
+    console.error("Error fetching clients:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
-res.send("created");
+
+// Create a new client
+app.post("/createclient", async (req, res) => {
+  try {
+    const { client_name, phone, case_ref_no } = req.body;
+
+    const existingClient = await clientModel.findOne({ case_ref_no });
+    if (existingClient) {
+      return res.status(400).json({ message: "Case reference number already exists" });
+    }
+
+    const newClient = new clientModel({ client_name, phone, case_ref_no });
+    await newClient.save();
+
+    res.status(201).json(newClient); // Send back the created client
+  } catch (error) {
+    console.error("Error creating client:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
+
+
 app.delete("/deletecases/:caseTitle", async(req,res)=>{
   const { caseT } = req.params;
   let result = await casesModel.deleteOne({caseT});
@@ -360,6 +399,10 @@ app.get("/hearings", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
 
 
 
