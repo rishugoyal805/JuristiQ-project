@@ -13,7 +13,7 @@ function LoginPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5173/login",
+        "http://localhost:3000/login",
         { email, password },
         { withCredentials: true } // To handle cookies (JWT authentication)
       );
@@ -66,5 +66,8 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
+
+
 
 
