@@ -49,23 +49,30 @@ function Clients() {
   return (
     <div>
       <SideBar />
+
+      {/* Add Client Button */}
       <button className="add-client-button" onClick={() => setShowForm(!showForm)}>+</button>
 
+      {/* Overlay & Form */}
+      {showForm && <div className="overlay" onClick={() => setShowForm(false)}></div>}
+      
       {showForm && (
         <div className="client-form">
-          <form className="client-box" onSubmit={handleFormSubmit}>
-            <label>Client Name:</label>
-            <input type="text" name="clientName" required />
-            <label>Phone:</label>
-            <input type="tel" name="phone" required />
-            <label>Case ref no.:</label>
-            <input type="number" name="case_ref_no" required />
-            <button className="submit-client" type="submit">Submit</button>
-          </form>
+          <div className="client-box">
+            <form onSubmit={handleFormSubmit}>
+              <label>Client Name:</label>
+              <input type="text" name="clientName" required />
+              <label>Phone:</label>
+              <input type="tel" name="phone" required />
+              <label>Case ref no.:</label>
+              <input type="number" name="case_ref_no" required />
+              <button className="submit-client" type="submit">Submit</button>
+            </form>
+          </div>
         </div>
       )}
 
-      {/* Card Section in Flexbox */}
+      {/* Clients List */}
       <div className="clients-container">
         {clients.map((client, index) => (
           <div className="client-card" key={index}>
@@ -81,3 +88,4 @@ function Clients() {
 }
 
 export default Clients;
+
