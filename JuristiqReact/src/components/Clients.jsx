@@ -12,46 +12,42 @@ function Clients() {
   }, []);
 
   const fetchClients = async () => {
-  try {
-    const response = await axios.get("http://localhost:3000/clients"); 
-    console.log("Fetched Clients:", response.data); // Debugging
-    setClients(response.data); // Update state
-  } catch (error) {
-    console.error("Error fetching clients:", error);
-  }
-};
-
-
-const handleFormSubmit = async (e) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const newClient = {
-    client_name: formData.get("clientName"),
-    phone: formData.get("phone"),
-    case_ref_no: formData.get("case_ref_no"),
+    try {
+      const response = await axios.get("http://localhost:3000/clients");
+      console.log("Fetched Clients:", response.data);
+      setClients(response.data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
   };
 
-  try {
-    const response = await axios.post("http://localhost:3000/createclient", newClient);
-    console.log("New Client Added:", response.data); // Debugging
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const newClient = {
+      client_name: formData.get("clientName"),
+      phone: formData.get("phone"),
+      case_ref_no: formData.get("case_ref_no"),
+    };
 
-    // Add new client directly to state
-    setClients((prevClients) => [...prevClients, newClient]);
+    try {
+      const response = await axios.post("http://localhost:3000/createclient", newClient);
+      console.log("New Client Added:", response.data);
 
-    setShowForm(false);
-  } catch (error) {
-    console.error("Error adding client:", error);
-    alert("Error adding client. Try again.");
-  }
-};
+      // Update state to reflect the new client
+      setClients((prevClients) => [...prevClients, response.data]); // Ensure server response is used
 
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error adding client:", error);
+      alert("Error adding client. Try again.");
+    }
+  };
 
   return (
     <div>
       <SideBar />
-      <button className="add-client-button" onClick={() => setShowForm(true)}>
-        +
-      </button>
+      <button className="add-client-button" onClick={() => setShowForm(true)}>+</button>
 
       {showForm && (
         <div className="client-form">
@@ -67,21 +63,17 @@ const handleFormSubmit = async (e) => {
         </div>
       )}
 
-      {/* Card Section */}
-      {clients.map((client, index) => (
-        <div className="client-card" key={index}>
-          <h2>Client Details</h2>
-          <p>
-            <strong>Name:</strong> {client.client_name}
-          </p>
-          <p>
-            <strong>Phone:</strong> {client.phone}
-          </p>
-          <p>
-            <strong>Case Ref No.:</strong> {client.case_ref_no}
-          </p>
-        </div>
-      ))}
+      {/* Card Section in Flexbox */}
+      <div className="clients-container">
+        {clients.map((client, index) => (
+          <div className="client-card" key={index}>
+            <h2>Client Details</h2>
+            <p><strong>Name:</strong> {client.client_name}</p>
+            <p><strong>Phone:</strong> {client.phone}</p>
+            <p><strong>Case Ref No.:</strong> {client.case_ref_no}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
