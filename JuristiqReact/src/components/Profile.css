@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Times New Roman', Times, serif;
-    background-color: #e5e5e5; 
+    background-color: #e5e5e5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,25 +19,15 @@ body {
     text-align: center;
     padding: 2rem;
     position: relative;
-    margin-left: 300px; /* Moves container to the right */
+    margin-left: 330px;
 }
 
-/* Profile Header */
-.profile-header {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: black;
-    margin-bottom: 10px;
-}
-
-/* Profile Picture - Rounded & Centered */
-.profile-pic-container {
+/* Profile Picture Section */
+.profile-pic-section {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    margin-bottom: 10px;
-    position: relative;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
 .profile-pic {
@@ -46,16 +36,14 @@ body {
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid black;
-    cursor: pointer;
 }
 
-/* Hide file input field */
-#file-input {
-    display: none;
+.profile-pic-section input {
+    margin-top: 10px;
 }
 
-/* Profile Information */
-.profile-info {
+/* Profile Details */
+.profile-details {
     text-align: left;
     font-size: 1rem;
     color: black;
@@ -63,47 +51,50 @@ body {
     padding: 0 20px;
 }
 
-.profile-info p {
-    margin: 5px 0;
+.profile-details label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+.profile-details input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
 }
 
 /* Case Statistics */
-.profile-stats {
-    text-align: left;
-    margin-top: 1rem;
-    padding: 0 20px;
-}
-
-.profile-stats h3 {
-    font-size: 1.2rem;
-    font-weight: bold;
+.case-statistics {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
     color: black;
 }
 
-.profile-stats p {
-    font-size: 1rem;
-    color: grey;
+.case-statistics h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.case-statistics p {
     margin: 5px 0;
 }
 
-/* Edit Profile Button */
-.profile-actions {
-    margin-top: 1.5rem;
-    text-align: center;
-}
-
-.profile-button {
-    padding: 0.6rem 1.2rem;
-    border-radius: 5px;
+/* Buttons */
+.edit-button, .save-button {
+    padding: 10px 15px;
     border: none;
+    border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
-    font-family: 'Times New Roman', Times, serif;
     background-color: black;
     color: white;
     transition: 0.3s ease;
+    margin-top: 15px;
 }
 
-.profile-button:hover {
+.edit-button:hover, .save-button:hover {
     background-color: #1d1c1c;
 }
