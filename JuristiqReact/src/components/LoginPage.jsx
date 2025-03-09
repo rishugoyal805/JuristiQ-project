@@ -66,16 +66,13 @@ function LoginPage() {
             </div>
 
             <div className="welcome-message">
-              <h2>Pepere vis Larmrte</h2>
-              <p>
-                Welcome ardeck, matris of the earates yore herite your in sar vider tout there or hight your fine
-                onverance.
-              </p>
+              <h2>Welcome to JuristiQ</h2>
+              <p>Effortless legal case management—secure, organized, and built for advocates.</p>
               <button className="cta-button" onClick={handleComerRighTov}>
-                Comer righ tov
-                <span className="arrow-icon">→</span>
+                Log In Now <span className="arrow-icon">→</span>
               </button>
             </div>
+
           </div><br></br>
           <div className="wave-container">
             <div className="wave-decoration"></div>

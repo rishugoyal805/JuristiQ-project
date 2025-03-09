@@ -9,7 +9,7 @@ const clientModel= require("./models/client");
  const moment = require('moment');
  const twilio = require('twilio');
   const cors = require("cors");
- app.use(cors({ origin: "http://localhost:5173", credentials: true })); // Update with your frontend URL
+ app.use(cors({ origin: "http://localhost:3000", credentials: true })); // Update with your frontend URL
 
 const postModel= require("./models/post");
 const casesModel= require("./models/cases");

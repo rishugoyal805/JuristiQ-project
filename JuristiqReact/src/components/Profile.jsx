@@ -22,7 +22,7 @@ function Profile() {
   const fetchProfile = async () => {
     try {
       const response = await axios.get("http://localhost:3000/profile");
-      setAdvocate(response.data);
+      setAdvocate(response.data); // Load signup data first
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
@@ -33,7 +33,7 @@ function Profile() {
       await axios.put("http://localhost:3000/updateProfile", advocate);
       alert("Profile updated successfully!");
       setEditMode(false);
-      fetchProfile(); // Fetch updated profile after saving
+      fetchProfile(); // Fetch updated profile from the database
     } catch (error) {
       console.error("Error updating profile:", error);
     }
