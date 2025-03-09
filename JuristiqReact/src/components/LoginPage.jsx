@@ -19,7 +19,13 @@ function LoginPage() {
     setError("")
 
     try {
-      const response = await axios.post("http://localhost:5173/login", { email, password }, { withCredentials: true })
+
+      const response = await axios.post(
+        "http://localhost:3000/login",
+        { email, password },
+        { withCredentials: true } // To handle cookies (JWT authentication)
+      );
+
 
       if (response.status === 200) {
         setSuccess(true)
@@ -141,6 +147,9 @@ function LoginPage() {
 }
 
 export default LoginPage
+
+
+
 
 
 

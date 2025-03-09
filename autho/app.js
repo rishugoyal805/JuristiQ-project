@@ -27,30 +27,60 @@ app.get('/',(req,res)=>{
 app.get('/login',(req,res)=>{
     res.render("login");
 })
-app.post('/login', async(req,res)=>{
-   let {email, password} = req.body;
-   let user = await userModel.findOne({email});
-    if(!user) return res.status(500).send("something went wrong");
+app.post("/login", async (req, res) => {
+  try {
+      const { email, password } = req.body;
 
-    bcrypt.compare(password, user.password, function(err,result){
-        let token=  jwt.sign({email: email, userid: user._id},"secretkey");
-          res.cookie("token", token);
-        if(result) res.status(200).redirect("/profile");
-        else res.redirect('/login');
-    });
- });
+      // Find user by email
+      const user = await userModel.findOne({ email });
+      if (!user) {
+          return res.sendStatus(401); // User not found
+      }
+
+      // Compare hashed password
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+          return res.sendStatus(401); // Incorrect password
+      }
+
+      // User exists and password matches
+      res.sendStatus(200);
+
+  } catch (error) {
+      console.error("Login error:", error);
+      res.sendStatus(500); // Internal server error
+  }
+});
+app.get("/getcases", async (req, res) => {
+  try {
+    const cases = await casesModel.find();
+    
+    // Transform cases to match frontend expectations
+    const formattedCases = cases.map(c => ({
+      ...c.toObject(),  // Convert Mongoose document to plain object
+      next_hearing: c.nextHearing  // Ensure field matches frontend key
+    }));
+
+    res.status(200).json(formattedCases);
+  } catch (error) {
+    console.error("Error fetching cases:", error);
+    res.sendStatus(500);
+  }
+});
+
+
  app.post('/register', async (req,res)=>{
-    let {email, password, username, name, age}= req.body;//so that you dont have to write req.body with variables again and again
+    let { name, age, email,password}= req.body;//so that you dont have to write req.body with variables again and again
 
-    let user = await userModel.findOne({email});
-    if(user) return res.status(500).send("user already registered");
+    let user = await userModel.deleteOne({email});
+    // if(user) return res.status(500).send("user already registered");
     bcrypt.genSalt(10, (err,salt)=>{
         bcrypt.hash(password, salt, async (err, hash)=>{
           let user = await userModel.create({
-                username,
+               name,
+               age,
                 email,
-                password: hash,
-                age
+                password: hash
             });
           let token=  jwt.sign({email: email, userid: user._id},"secretkey");
           res.cookie("token", token);
@@ -77,7 +107,15 @@ app.post('/login', async(req,res)=>{
  app.get('/toknow',async(req,res)=>{
  let contents= await userModel.find();
  res.send(contents);
- })
+ });
+ app.get('/toknowcl',async(req,res)=>{
+  let contents= await clientModel.find();
+  res.send(contents);
+  });
+ app.get('/toknowc',async(req,res)=>{
+  let contents= await casesModel.find();
+  res.send(contents);
+  });
 app.get('/logout',(req,res)=>{
     res.cookie("token", "");
     //making the cookie blank
@@ -150,7 +188,7 @@ app.post("/advocate", async (req, res) => {
       secure: false, // true for SSL
       auth: {
         user: "devyani04sh@gmail.com", // Sender email
-        pass: "kbfg cnef gikw gecj", // App password (not your email password)
+        pass: "fbgt bbyv bote ldri", // App password (not your email password)
       },
     });
 
@@ -208,58 +246,166 @@ app.get("/casesinfo",isLoggedIn,async(req,res)=>{
   let info= await casesModel.find();
   res.send(info);
 });
-app.post("/createcase",isLoggedIn,async(req,res)=>{
-  const {caseTitle, clientName, fees}= req.body;
-  let user = await casesModel.create({
-    caseTitle,
-    clientName,
-    fees
+app.post("/createcase", async (req, res) => {
+  try {
+      const { case_ref_no, caseTitle, clientName, status, next_hearing, fees, pending_fees } = req.body;
+
+      // Create a new case
+      const newCase = await casesModel.create({
+          case_ref_no,
+          caseTitle,
+          clientName,
+          status,
+          nextHearing: next_hearing, // Match field name in schema
+          fees,
+          pending_fees,
+      });
+
+      res.status(201).json({ success: true, message: "Case created successfully", case: newCase });
+  } catch (error) {
+      console.error("Error creating case:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+  }
 });
-res.send("created");
-});
-app.put("/updatecase/:caseTitle", isLoggedIn, async (req, res) => {
+app.put("/updatecase/:case_ref_no", async (req, res) => {
   try {
     const updatedCase = await casesModel.findOneAndUpdate(
-      { caseTitle: req.params.caseTitle }, // Match by caseTitle from URL
+      { case_ref_no: req.params.case_ref_no }, // Match by case_ref_no from URL
       {
+        caseTitle: req.body.caseTitle,
         clientName: req.body.clientName,
-        fees: req.body.fees
-      }, 
+        status: req.body.status,
+        nextHearing: req.body.next_hearing,
+        fees: req.body.fees,
+        pending_fees: req.body.pending_fees,
+      },
       { new: true } // Ensure the updated document is returned
     );
 
     if (!updatedCase) {
-      return res.status(404).send("Case not found");
+      return res.status(404).json({ success: false, message: "Case not found" });
     }
 
-    res.status(200).send(updatedCase); // Respond with the updated case
+    res.status(200).json({ success: true, message: "Case updated successfully", case: updatedCase });
   } catch (error) {
     console.error("Error during update:", error);
-    res.status(500).send("An error occurred while updating the case");
+    res.status(500).json({ success: false, message: "An error occurred while updating the case" });
   }
 });
-app.get("/getclient/:case_ref_no",async(req,res)=>{
+// Get client details by case reference number
+app.get("/clients/:case_ref_no", async (req, res) => {
+  try {
+    const { case_ref_no } = req.params;
+    const client = await clientModel.findOne({ case_ref_no });
+
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    res.json(client);
+  } catch (error) {
+    console.error("Error fetching client:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Get all clients
+app.get("/clients", async (req, res) => {
+  try {
+    const clients = await clientModel.find();
+    res.json(clients);
+  } catch (error) {
+    console.error("Error fetching clients:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Create a new client
+app.post("/createclient", async (req, res) => {
+  try {
+    const { client_name, phone, case_ref_no } = req.body;
+
+    const existingClient = await clientModel.findOne({ case_ref_no });
+    if (existingClient) {
+      return res.status(400).json({ message: "Case reference number already exists" });
+    }
+
+    const newClient = new clientModel({ client_name, phone, case_ref_no });
+    await newClient.save();
+
+    res.status(201).json(newClient); // Send back the created client
+  } catch (error) {
+    console.error("Error creating client:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+app.delete("/deletecases/:caseTitle", async(req,res)=>{
+  const { caseT } = req.params;
+  let result = await casesModel.deleteOne({caseT});
+if(result){
+  res.send("deleted");
+}
+else{
+  res.send("eroor");
+}
+});
+app.delete("/deletecase/:case_ref_no", async (req, res) => {
   const { case_ref_no } = req.params;
-  const clientDatabase = await clientModel.findOne({ case_ref_no });
-  res.send(clientDatabase);
+
+  if (isNaN(case_ref_no)) {
+    return res.status(400).json({ success: false, message: "Invalid case reference number" });
+  }
+
+  try {
+    const result = await casesModel.deleteOne({ case_ref_no: Number(case_ref_no) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: "Case not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Case deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting case:", error);
+    res.status(500).json({ success: false, message: "Failed to delete case" });
+  }
 });
-app.post("/createclient",async(req,res)=>{
-  const {client_name, phone, case_ref_no}= req.body;
-  let user = await clientModel.create({
-    client_name,
-    phone,
-    case_ref_no
+app.delete("/deleteadv/:email", async (req, res) => {
+  const { email } = req.params;  // ✅ Correctly extract "email"
+  
+  try {
+    const deletedUser = await userModel.deleteOne({ email }); // ✅ Use email to find and delete user
+
+    if (deletedUser.deletedCount === 0) {
+      return res.status(404).send("User not found");  // ✅ Handle case where user isn't found
+    }
+
+    res.send("User deleted successfully"); 
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).send("Error deleting user");
+  }
 });
-res.send("created");
+
+app.get("/hearings", async (req, res) => {
+  try {
+    const cases = await casesModel.find({}, "hearingDate"); // Fetch only hearingDate
+    res.json(cases.map((c) => c.hearingDate)); // Convert to JSON array
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch hearing dates" });
+  }
 });
-app.delete("/deletecase/:caseTitle", async(req,res)=>{
-  const { caseTitle }= req.params;
-   await casesModel.deleteOne({caseTitle });
-  res.send("deleted");
-}); 
-app.delete("/deleteadv/:name", async(req,res)=>{
-  const { name }= req.params;
-   await userModel.deleteOne({name });
-  res.send("deleted");
-}); 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
+
+
+
+
+
+
+
+
+
+
