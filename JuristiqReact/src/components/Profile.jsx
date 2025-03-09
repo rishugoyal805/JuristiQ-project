@@ -21,23 +21,24 @@ function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/profile");
-      setAdvocate(response.data); // Load signup data first
+      const response = await axios.get("http://localhost:3000/profile", { withCredentials: true });
+      setAdvocate(response.data);
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
   };
-
+  
   const handleUpdate = async () => {
     try {
-      await axios.put("http://localhost:3000/updateProfile", advocate);
+      await axios.put("http://localhost:3000/updateProfile", advocate, { withCredentials: true });
       alert("Profile updated successfully!");
       setEditMode(false);
-      fetchProfile(); // Fetch updated profile from the database
+      fetchProfile();
     } catch (error) {
       console.error("Error updating profile:", error);
     }
   };
+  
 
   const handleProfilePicUpload = (event) => {
     const file = event.target.files[0];
