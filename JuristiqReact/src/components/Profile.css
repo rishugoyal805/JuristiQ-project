@@ -14,6 +14,7 @@ body {
 .profile-container {
     background: white;
     width: 500px;
+    height: 100vh;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -39,7 +40,7 @@ body {
 }
 
 .profile-pic-section input {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 /* Profile Details */
@@ -47,7 +48,7 @@ body {
     text-align: left;
     font-size: 1rem;
     color: black;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding: 0 20px;
 }
 
@@ -59,16 +60,16 @@ body {
 
 .profile-details input {
     width: 100%;
-    padding: 8px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 5px;
+    /* margin-top: 5px; */
 }
 
 /* Case Statistics */
 .case-statistics {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 50px;
     font-size: 1rem;
     color: black;
 }
@@ -79,12 +80,12 @@ body {
 }
 
 .case-statistics p {
-    margin: 5px 0;
+    margin: 10px 0;
 }
 
 /* Buttons */
 .edit-button, .save-button {
-    padding: 10px 15px;
+    padding: 10px 10px;
     border: none;
     border-radius: 5px;
     font-size: 1rem;
@@ -92,7 +93,7 @@ body {
     background-color: black;
     color: white;
     transition: 0.3s ease;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .edit-button:hover, .save-button:hover {
