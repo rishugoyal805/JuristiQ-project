@@ -9,15 +9,15 @@ const clientModel= require("./models/client");
  const moment = require('moment');
  const twilio = require('twilio');
   const cors = require("cors");
- app.use(cors({ origin: "http://localhost:3000", credentials: true })); // Update with your frontend URL
+ app.use(cors({ origin: "http://localhost:5173", credentials: true })); // Update with your frontend URL
 
 const postModel= require("./models/post");
 const casesModel= require("./models/cases");
 const cookieParser= require('cookie-parser');
 const path=require('path');
 app.set("view engine", "ejs");
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.json({ limit: "50mb" })); // Adjust size as needed
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'public')));
 app.use(bodyParser.json());
@@ -136,10 +136,75 @@ else{
   res.send(user);
  })
  //protected routes work only when logged in
- app.get('/profile', isLoggedIn,async(req,res)=>{
-   let user= await userModel.findOne({email: req.user.email }).populate("posts");
-   res.render('profile',{user});
+// Middleware to check if user is logged in
+function isLoggedIn(req, res, next) {
+  if (!req.cookies.token) return res.status(401).json({ message: "Unauthorized" });
+
+  try {
+    let data = jwt.verify(req.cookies.token, "secretkey");
+    req.user = data;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+}
+
+
+// API to get all hearing dates
+app.get("/hearings", async (req, res) => {
+  try {
+    const cases = await casesModel.find({}, "hearingDate"); // Fetch only hearingDate
+    res.json(cases.map((c) => c.hearingDate)); // Convert to JSON array
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch hearing dates" });
+  }
 });
+
+
+// GET Profile Data
+app.get("/profile", isLoggedIn, async (req, res) => {
+  try {
+    let user = await userModel.findOne({ email: req.user.email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Ensure default values for missing fields
+    res.json({
+      name: user.name || "",
+      email: user.email || "",
+      age: user.age || "",
+      contact: user.contact || "",
+      casesHandled: user.casesHandled || 0,
+      casesWon: user.casesWon || 0,
+      profilePic: user.profilePic || "",
+    });
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+// PUT Update Profile Data
+app.put("/updateProfile", isLoggedIn, async (req, res) => {
+  try {
+    const { name, age, contact, profilePic } = req.body;
+
+    const updatedUser = await userModel.findOneAndUpdate(
+      { email: req.user.email },
+      { $set: { name, age, contact, profilePic } }, // Ensure update is correctly applied
+      { new: true } // Return updated user
+    );
+
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+
+    res.json({ message: "Profile updated successfully", user: updatedUser });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 app.get("/like/:id", isLoggedIn, async(req,res)=>{
   let post= await postModel.findOne({_id: req.params.id}).populate("user");
   if(post.likes.indexOf(req.user.userid)=== -1){
@@ -399,6 +464,11 @@ app.get("/hearings", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
+
 
 
 
