@@ -461,6 +461,15 @@ app.get("/hearings", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch hearing dates" });
   }
 });
+app.get("/pendingcases", async (req, res) => {
+  try {
+    const pendingCases = await casesModel.find({ status: "Pending" }, "caseTitle clientName nextHearing");
+    res.json(pendingCases);
+  } catch (error) {
+    console.error("Error fetching pending cases:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
