@@ -15,20 +15,28 @@ function Profile() {
   });
   const [editMode, setEditMode] = useState(false);
 
-
   useEffect(() => {
-    axios.get("http://localhost:5173/profile")
-      .then(response => setAdvocate(response.data))
-      .catch(error => console.error("Error fetching profile:", error));
+    fetchProfile();
   }, []);
 
-  const handleUpdate = () => {
-    axios.put("http://localhost:5173/updateProfile", advocate)
-      .then(() => {
-        alert("Profile updated successfully!");
-        setEditMode(false);
-      })
-      .catch(error => console.error("Error updating profile:", error));
+  const fetchProfile = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/profile");
+      setAdvocate(response.data);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      await axios.put("http://localhost:3000/updateProfile", advocate);
+      alert("Profile updated successfully!");
+      setEditMode(false);
+      fetchProfile(); // Fetch updated profile after saving
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   const handleProfilePicUpload = (event) => {
@@ -59,13 +67,6 @@ function Profile() {
             <p>{advocate.name}</p>
           )}
 
-          <label>Email:</label>
-          {editMode ? (
-            <input type="email" value={advocate.email} readOnly />
-          ) : (
-            <p>{advocate.email}</p>
-          )}
-
           <label>Age:</label>
           {editMode ? (
             <input type="number" value={advocate.age} onChange={(e) => setAdvocate({ ...advocate, age: e.target.value })} />
@@ -81,11 +82,13 @@ function Profile() {
           )}
         </div>
 
-        <div className="case-statistics">
-          <h3>Case Statistics</h3>
-          <p>Cases Handled: {advocate.casesHandled}</p>
-          <p>Cases Won: {advocate.casesWon}</p>
-        </div>
+        {!editMode && (
+          <div className="case-statistics">
+            <h3>Case Statistics</h3>
+            <p>Cases Handled: {advocate.casesHandled}</p>
+            <p>Cases Won: {advocate.casesWon}</p>
+          </div>
+        )}
 
         {editMode ? (
           <button onClick={handleUpdate} className="save-button">Save</button>
@@ -98,5 +101,3 @@ function Profile() {
 }
 
 export default Profile;
-
-
