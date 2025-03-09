@@ -4,7 +4,7 @@ import axios from "axios";
 import "react-calendar/dist/Calendar.css";
 import "./calender.css"; // Custom styles for red marking
 
-function HearingCalendar() {
+function Calender() {
   const [hearingDates, setHearingDates] = useState([]);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function HearingCalendar() {
   }, []);
 
   return (
-    <div className="calendar-container">
+    <div className="calender">
       <Calendar
         tileClassName={({ date }) =>
           hearingDates.some((d) => d.toDateString() === date.toDateString()) ? "highlight" : null
@@ -34,6 +34,6 @@ function HearingCalendar() {
   );
 }
 
-export default HearingCalendar;
+export default Calender;
 
 
