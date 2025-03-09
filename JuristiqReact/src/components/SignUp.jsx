@@ -59,7 +59,7 @@ function SignUp() {
 
       if (response.status === 200) {
         alert("Registration successful! Please log in.");
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("Error during registration:", error);
