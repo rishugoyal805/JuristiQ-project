@@ -13,7 +13,7 @@ function Clients() {
 
   const fetchClients = async () => {
   try {
-    const response = await axios.get("http://localhost:5173/clients"); 
+    const response = await axios.get("http://localhost:3000/clients"); 
     console.log("Fetched Clients:", response.data); // Debugging
     setClients(response.data); // Update state
   } catch (error) {
@@ -22,24 +22,29 @@ function Clients() {
 };
 
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const newClient = {
-      client_name: formData.get("clientName"),
-      phone: formData.get("phone"),
-      case_ref_no: formData.get("case_ref_no"),
-    };
-
-    try {
-      await axios.post("http://localhost:5173/createclient", newClient); 
-      fetchClients(); // Refresh client list
-      setShowForm(false);
-    } catch (error) {
-      console.error("Error adding client:", error);
-      alert("Error adding client. Try again.");
-    }
+const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const newClient = {
+    client_name: formData.get("clientName"),
+    phone: formData.get("phone"),
+    case_ref_no: formData.get("case_ref_no"),
   };
+
+  try {
+    const response = await axios.post("http://localhost:3000/createclient", newClient);
+    console.log("New Client Added:", response.data); // Debugging
+
+    // Add new client directly to state
+    setClients((prevClients) => [...prevClients, newClient]);
+
+    setShowForm(false);
+  } catch (error) {
+    console.error("Error adding client:", error);
+    alert("Error adding client. Try again.");
+  }
+};
+
 
   return (
     <div>
