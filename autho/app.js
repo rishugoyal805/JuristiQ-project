@@ -27,30 +27,42 @@ app.get('/',(req,res)=>{
 app.get('/login',(req,res)=>{
     res.render("login");
 })
-app.post('/login', async(req,res)=>{
-   let {email, password} = req.body;
-   let user = await userModel.findOne({email});
-    if(!user) return res.status(500).send("something went wrong");
+app.post("/login", async (req, res) => {
+  try {
+      const { email, password } = req.body;
 
-    bcrypt.compare(password, user.password, function(err,result){
-        let token=  jwt.sign({email: email, userid: user._id},"secretkey");
-          res.cookie("token", token);
-        if(result) res.status(200).redirect("/profile");
-        else res.redirect('/login');
-    });
- });
+      // Find user by email
+      const user = await userModel.findOne({ email });
+      if (!user) {
+          return res.sendStatus(401); // User not found
+      }
+
+      // Compare hashed password
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+          return res.sendStatus(401); // Incorrect password
+      }
+
+      // User exists and password matches
+      res.sendStatus(200);
+
+  } catch (error) {
+      console.error("Login error:", error);
+      res.sendStatus(500); // Internal server error
+  }
+});
  app.post('/register', async (req,res)=>{
-    let {email, password, username, name, age}= req.body;//so that you dont have to write req.body with variables again and again
+    let { name, age, email,password}= req.body;//so that you dont have to write req.body with variables again and again
 
-    let user = await userModel.findOne({email});
-    if(user) return res.status(500).send("user already registered");
+    let user = await userModel.deleteOne({email});
+    // if(user) return res.status(500).send("user already registered");
     bcrypt.genSalt(10, (err,salt)=>{
         bcrypt.hash(password, salt, async (err, hash)=>{
           let user = await userModel.create({
-                username,
+               name,
+               age,
                 email,
-                password: hash,
-                age
+                password: hash
             });
           let token=  jwt.sign({email: email, userid: user._id},"secretkey");
           res.cookie("token", token);
@@ -257,9 +269,35 @@ app.delete("/deletecase/:caseTitle", async(req,res)=>{
    await casesModel.deleteOne({caseTitle });
   res.send("deleted");
 }); 
-app.delete("/deleteadv/:name", async(req,res)=>{
-  const { name }= req.params;
-   await userModel.deleteOne({name });
-  res.send("deleted");
-}); 
-app.listen(3000);
+app.delete("/deleteadv/:email", async (req, res) => {
+  const { email } = req.params;  // ✅ Correctly extract "email"
+  
+  try {
+    const deletedUser = await userModel.deleteOne({ email }); // ✅ Use email to find and delete user
+
+    if (deletedUser.deletedCount === 0) {
+      return res.status(404).send("User not found");  // ✅ Handle case where user isn't found
+    }
+
+    res.send("User deleted successfully"); 
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).send("Error deleting user");
+  }
+});
+
+app.get("/hearings", async (req, res) => {
+  try {
+    const cases = await casesModel.find({}, "hearingDate"); // Fetch only hearingDate
+    res.json(cases.map((c) => c.hearingDate)); // Convert to JSON array
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch hearing dates" });
+  }
+});
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
+
+
+
+
