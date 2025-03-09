@@ -51,6 +51,24 @@ app.post("/login", async (req, res) => {
       res.sendStatus(500); // Internal server error
   }
 });
+app.get("/getcases", async (req, res) => {
+  try {
+    const cases = await casesModel.find();
+    
+    // Transform cases to match frontend expectations
+    const formattedCases = cases.map(c => ({
+      ...c.toObject(),  // Convert Mongoose document to plain object
+      next_hearing: c.nextHearing  // Ensure field matches frontend key
+    }));
+
+    res.status(200).json(formattedCases);
+  } catch (error) {
+    console.error("Error fetching cases:", error);
+    res.sendStatus(500);
+  }
+});
+
+
  app.post('/register', async (req,res)=>{
     let { name, age, email,password}= req.body;//so that you dont have to write req.body with variables again and again
 
@@ -89,7 +107,11 @@ app.post("/login", async (req, res) => {
  app.get('/toknow',async(req,res)=>{
  let contents= await userModel.find();
  res.send(contents);
- })
+ });
+ app.get('/toknowc',async(req,res)=>{
+  let contents= await casesModel.find();
+  res.send(contents);
+  });
 app.get('/logout',(req,res)=>{
     res.cookie("token", "");
     //making the cookie blank
@@ -220,34 +242,50 @@ app.get("/casesinfo",isLoggedIn,async(req,res)=>{
   let info= await casesModel.find();
   res.send(info);
 });
-app.post("/createcase",isLoggedIn,async(req,res)=>{
-  const {caseTitle, clientName, fees}= req.body;
-  let user = await casesModel.create({
-    caseTitle,
-    clientName,
-    fees
+app.post("/createcase", async (req, res) => {
+  try {
+      const { case_ref_no, caseTitle, clientName, status, next_hearing, fees, pending_fees } = req.body;
+
+      // Create a new case
+      const newCase = await casesModel.create({
+          case_ref_no,
+          caseTitle,
+          clientName,
+          status,
+          nextHearing: next_hearing, // Match field name in schema
+          fees,
+          pending_fees,
+      });
+
+      res.status(201).json({ success: true, message: "Case created successfully", case: newCase });
+  } catch (error) {
+      console.error("Error creating case:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+  }
 });
-res.send("created");
-});
-app.put("/updatecase/:caseTitle", isLoggedIn, async (req, res) => {
+app.put("/updatecase/:case_ref_no", async (req, res) => {
   try {
     const updatedCase = await casesModel.findOneAndUpdate(
-      { caseTitle: req.params.caseTitle }, // Match by caseTitle from URL
+      { case_ref_no: req.params.case_ref_no }, // Match by case_ref_no from URL
       {
+        caseTitle: req.body.caseTitle,
         clientName: req.body.clientName,
-        fees: req.body.fees
-      }, 
+        status: req.body.status,
+        nextHearing: req.body.next_hearing,
+        fees: req.body.fees,
+        pending_fees: req.body.pending_fees,
+      },
       { new: true } // Ensure the updated document is returned
     );
 
     if (!updatedCase) {
-      return res.status(404).send("Case not found");
+      return res.status(404).json({ success: false, message: "Case not found" });
     }
 
-    res.status(200).send(updatedCase); // Respond with the updated case
+    res.status(200).json({ success: true, message: "Case updated successfully", case: updatedCase });
   } catch (error) {
     console.error("Error during update:", error);
-    res.status(500).send("An error occurred while updating the case");
+    res.status(500).json({ success: false, message: "An error occurred while updating the case" });
   }
 });
 app.get("/getclient/:case_ref_no",async(req,res)=>{
@@ -264,11 +302,36 @@ app.post("/createclient",async(req,res)=>{
 });
 res.send("created");
 });
-app.delete("/deletecase/:caseTitle", async(req,res)=>{
-  const { caseTitle }= req.params;
-   await casesModel.deleteOne({caseTitle });
+app.delete("/deletecases/:caseTitle", async(req,res)=>{
+  const { caseT } = req.params;
+  let result = await casesModel.deleteOne({caseT});
+if(result){
   res.send("deleted");
-}); 
+}
+else{
+  res.send("eroor");
+}
+});
+app.delete("/deletecase/:case_ref_no", async (req, res) => {
+  const { case_ref_no } = req.params;
+
+  if (isNaN(case_ref_no)) {
+    return res.status(400).json({ success: false, message: "Invalid case reference number" });
+  }
+
+  try {
+    const result = await casesModel.deleteOne({ case_ref_no: Number(case_ref_no) });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: "Case not found" });
+    }
+
+    res.status(200).json({ success: true, message: "Case deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting case:", error);
+    res.status(500).json({ success: false, message: "Failed to delete case" });
+  }
+});
 app.delete("/deleteadv/:email", async (req, res) => {
   const { email } = req.params;  // ✅ Correctly extract "email"
   
@@ -297,6 +360,8 @@ app.get("/hearings", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
 
 
 
