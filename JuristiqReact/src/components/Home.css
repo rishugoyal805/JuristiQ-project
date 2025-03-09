@@ -44,7 +44,7 @@
 /* Lower content adjustments */
 .lower-content {
     display: flex;
-    align-items: center;
+    align-items: left;
     flex-direction: column;
     height: 200px;
     margin-bottom: 30px;
