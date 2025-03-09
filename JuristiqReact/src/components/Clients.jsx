@@ -35,9 +35,11 @@ function Clients() {
       console.log("New Client Added:", response.data);
 
       // Update state to reflect the new client
-      setClients((prevClients) => [...prevClients, response.data]); // Ensure server response is used
+      setClients((prevClients) => [...prevClients, response.data]);
 
+      // Hide the form after submission
       setShowForm(false);
+      e.target.reset(); // Clear form fields
     } catch (error) {
       console.error("Error adding client:", error);
       alert("Error adding client. Try again.");
@@ -47,7 +49,7 @@ function Clients() {
   return (
     <div>
       <SideBar />
-      <button className="add-client-button" onClick={() => setShowForm(true)}>+</button>
+      <button className="add-client-button" onClick={() => setShowForm(!showForm)}>+</button>
 
       {showForm && (
         <div className="client-form">
