@@ -14,12 +14,14 @@ const ForgetPassword = () => {
     e.preventDefault();
     setMessage("");
     setLoading(true);
-
+  
     try {
       const response = await axios.post("http://localhost:3000/existing", { email, secretString });
+      console.log(response.data); // Debugging response data
       setMessage(response.data.message);
+  
       if (response.data.success) {
-        setTimeout(() => navigate("/"), 2000); // Navigate after 2 seconds
+        navigate("/"); // Immediate navigation after success
       }
     } catch (error) {
       setMessage(error.response?.data?.message || "Error connecting to server");
@@ -27,6 +29,7 @@ const ForgetPassword = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="page-container">
