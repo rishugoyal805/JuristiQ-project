@@ -17,18 +17,24 @@ const ForgetPassword = () => {
   
     try {
       const response = await axios.post("http://localhost:3000/existing", { email, secretString });
-      console.log(response.data); // Debugging response data
+  
+      console.log("API Response:", response.data); // Debugging response
       setMessage(response.data.message);
   
       if (response.data.success) {
-        navigate("/"); // Immediate navigation after success
+        console.log("Success received, navigating...");
+        navigate("/");  // Navigate to login
+      } else {
+        console.log("Success flag is false, not navigating.");
       }
     } catch (error) {
+      console.error("Error:", error.response?.data?.message || "Error connecting to server");
       setMessage(error.response?.data?.message || "Error connecting to server");
     } finally {
       setLoading(false);
     }
   };
+  
   
 
   return (
