@@ -508,7 +508,25 @@ app.get("/getfees", async (req, res) => {
   }
 });
 
+app.post("/existing", async (req, res) => {
+  const { email, secretKey } = req.body;
 
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Email not found" });
+    }
+
+    if (user.secretKey !== secretKey) {
+      return res.status(401).json({ message: "Incorrect secret key" });
+    }
+
+    res.status(200).json({ message: "Verification successful" });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 app.put("/updatefee/:id", async (req, res) => {
   try {
     const updatedFee = await FeesModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
