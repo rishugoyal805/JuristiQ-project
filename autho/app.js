@@ -48,7 +48,7 @@ app.post("/login", async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user._id, email: user.email }, "secretkey", { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id, email: user.email }, "secretString", { expiresIn: "1h" });
 
     // Set token in HTTP-only cookie
     res.cookie("token", token, {
@@ -97,7 +97,7 @@ app.get("/getcases", async (req, res) => {
                 password: hash,
                 secretString
             });
-          let token=  jwt.sign({email: email, userid: user._id},"secretkey");
+          let token=  jwt.sign({email: email, userid: user._id},"secretString");
           res.cookie("token", token);
           res.send("registered");
         })
@@ -141,7 +141,7 @@ app.get('/logout',(req,res)=>{
 //  function isLoggedIn(req,res, next){
 // if(req.cookies.token ==="") res.redirect("/login");
 // else{
-//  let data = jwt.verify(req.cookies.token, "secretkey");
+//  let data = jwt.verify(req.cookies.token, "secretString");
 //  req.user=data;
 //  next();
 // }
@@ -160,7 +160,7 @@ function isLoggedIn(req, res, next) {
   }
 
   try {
-    let data = jwt.verify(req.cookies.token, "secretkey");
+    let data = jwt.verify(req.cookies.token, "secretString");
     console.log("Token verified:", data);
     req.user = data;
     next();
@@ -510,7 +510,7 @@ app.get("/getfees", async (req, res) => {
 });
 
 app.post("/existing", async (req, res) => {
-  const { email, secretKey } = req.body;
+  const { email, secretString } = req.body;
 
   try {
     const user = await userModel.findOne({ email });
@@ -519,7 +519,7 @@ app.post("/existing", async (req, res) => {
       return res.status(404).json({ message: "Email not found" });
     }
 
-    if (user.secretKey !== secretKey) {
+    if (user.secretString !== secretString) {
       return res.status(401).json({ message: "Incorrect secret key" });
     }
 
@@ -555,6 +555,92 @@ app.delete("/deletefee/:id", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
