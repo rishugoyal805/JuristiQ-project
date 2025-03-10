@@ -14,13 +14,14 @@ body {
 .profile-container {
     background: white;
     width: 500px;
-    height: 100vh;
+    /* height: 100vh; */
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     text-align: center;
     padding: 2rem;
     position: relative;
     margin-left: 330px;
+    margin-top: 5px;
 }
 
 /* Profile Picture Section */
@@ -98,4 +99,9 @@ body {
 
 .edit-button:hover, .save-button:hover {
     background-color: #1d1c1c;
+}
+
+.label{
+    display: flex;
+    flex-direction: row;
 }

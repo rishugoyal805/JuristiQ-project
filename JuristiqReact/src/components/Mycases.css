@@ -71,11 +71,10 @@ input {
     display: flex;
     align-items: center; /* Centers the table vertically when empty */
     justify-content: center;
+    
   }
   
   table {
-    margin-left: 300px;
-    margin-top: 30px;
     align-items: center; 
     width: 77%;
     border-collapse: separate;
@@ -84,6 +83,10 @@ input {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle 3D effect */
     overflow: hidden;
+    position: absolute;
+    left: 10px;  /* Move table 330px from the left */
+    top: 5px;    /* Move table 30px from the top */
+    transform: none; /* Remove translateX(-50%) since we don't want centering */
   }
   
   thead {
