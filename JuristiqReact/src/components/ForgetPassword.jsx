@@ -4,7 +4,7 @@ import "./ForgetPassword.css";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
-  const [secretKey, setSecretKey] = useState("");
+  const [secretString, setsecretString] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,7 +14,7 @@ const ForgetPassword = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/existing", { email, secretKey });
+      const response = await axios.post("http://localhost:3000/existing", { email, secretString });
       setMessage(response.data.message);
     } catch (error) {
       setMessage(error.response?.data?.message || "Error connecting to server");
@@ -64,8 +64,8 @@ const ForgetPassword = () => {
               <input
                 type="password"
                 placeholder="Enter secret key"
-                value={secretKey}
-                onChange={(e) => setSecretKey(e.target.value)}
+                value={secretString}
+                onChange={(e) => setsecretString(e.target.value)}
                 required
                 className="input-field"
               />
@@ -83,4 +83,6 @@ const ForgetPassword = () => {
 };
 
 export default ForgetPassword;
+
+
 
