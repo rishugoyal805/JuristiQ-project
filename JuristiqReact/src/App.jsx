@@ -9,6 +9,7 @@ import MyCases from './components/MyCases'
 import Fees from './components/Fees'
 import Clients from './components/Clients'
 import Profile from './components/Profile'
+import ForgetPassword from './components/ForgetPassword'
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile/>
+  },
+  {
+    path: "/forget-password",
+    element: <ForgetPassword/>
   },
   {
     path: "*",

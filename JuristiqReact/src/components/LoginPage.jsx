@@ -110,9 +110,9 @@ function LoginPage() {
               <div className="form-group">
                 <div className="password-header">
                   <label htmlFor="password">Password</label>
-                  <a href="#" className="forgot-password">
+                  <div className="forgot-password" onClick={() => navigate("/forgot-password")}>
                     Forgot password?
-                  </a>
+                  </div>
                 </div>
                 <input
                   id="password"

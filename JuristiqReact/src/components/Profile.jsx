@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Profile.css";
@@ -18,18 +17,30 @@ function Profile() {
 
   useEffect(() => {
     fetchProfile();
+    fetchCaseStatistics();
   }, []);
 
   const fetchProfile = async () => {
     try {
-      
       const response = await axios.get("http://localhost:3000/profile", { withCredentials: true });
       setAdvocate(response.data);
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
   };
-  
+
+  const fetchCaseStatistics = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/getcases");
+      const cases = response.data;
+      const casesHandled = cases.length;
+      const casesWon = cases.filter(c => c.status.toLowerCase() === "won").length;
+      setAdvocate(prev => ({ ...prev, casesHandled, casesWon }));
+    } catch (error) {
+      console.error("Error fetching case statistics:", error);
+    }
+  };
+
   const handleUpdate = async () => {
     try {
       await axios.put("http://localhost:3000/updateProfile", advocate, { withCredentials: true });
@@ -40,7 +51,6 @@ function Profile() {
       console.error("Error updating profile:", error);
     }
   };
-  
 
   const handleProfilePicUpload = (event) => {
     const file = event.target.files[0];
@@ -104,3 +114,4 @@ function Profile() {
 }
 
 export default Profile;
+
