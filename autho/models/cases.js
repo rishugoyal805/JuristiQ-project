@@ -13,6 +13,7 @@ const casesSchema= mongoose.Schema({
     nextHearing: Date,
     case_ref_no: Number,
     fees: Number,
+    pending_fees: Number,
     posts: [
         { type: mongoose.Schema.Types.ObjectId, ref: "post"}
     ]

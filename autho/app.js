@@ -27,30 +27,42 @@ app.get('/',(req,res)=>{
 app.get('/login',(req,res)=>{
     res.render("login");
 })
+
+
 app.post("/login", async (req, res) => {
   try {
-      const { email, password } = req.body;
+    const { email, password } = req.body;
 
-      // Find user by email
-      const user = await userModel.findOne({ email });
-      if (!user) {
-          return res.sendStatus(401); // User not found
-      }
+    // Find user by email
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
 
-      // Compare hashed password
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-          return res.sendStatus(401); // Incorrect password
-      }
+    // Compare hashed password
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).json({ message: "Incorrect password" });
+    }
 
-      // User exists and password matches
-      res.sendStatus(200);
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id, email: user.email }, "secretkey", { expiresIn: "1h" });
+
+    // Set token in HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true, // Prevents JavaScript access
+      secure: false, // Set to true in production with HTTPS
+      sameSite: "lax", // Change to "none" if frontend & backend are on different domains
+    });
+
+    res.json({ message: "Login successful" });
 
   } catch (error) {
-      console.error("Login error:", error);
-      res.sendStatus(500); // Internal server error
+    console.error("Login error:", error);
+    res.sendStatus(500); // Internal server error
   }
 });
+
 app.get("/getcases", async (req, res) => {
   try {
     const cases = await casesModel.find();
@@ -123,14 +135,14 @@ app.get('/logout',(req,res)=>{
 });
  
  //protected middleware
- function isLoggedIn(req,res, next){
-if(req.cookies.token ==="") res.redirect("/login");
-else{
- let data = jwt.verify(req.cookies.token, "secretkey");
- req.user=data;
- next();
-}
- }
+//  function isLoggedIn(req,res, next){
+// if(req.cookies.token ==="") res.redirect("/login");
+// else{
+//  let data = jwt.verify(req.cookies.token, "secretkey");
+//  req.user=data;
+//  next();
+// }
+//  }
  app.get('/read',async(req,res)=>{
   const user= await userModel.findOne({username:"xyz"});
   res.send(user);
@@ -138,16 +150,23 @@ else{
  //protected routes work only when logged in
 // Middleware to check if user is logged in
 function isLoggedIn(req, res, next) {
-  if (!req.cookies.token) return res.status(401).json({ message: "Unauthorized" });
+  console.log("Cookies:", req.cookies);
+  if (!req.cookies.token) {
+    console.log("Token missing");
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
   try {
     let data = jwt.verify(req.cookies.token, "secretkey");
+    console.log("Token verified:", data);
     req.user = data;
     next();
   } catch (error) {
+    console.log("JWT Error:", error.message);
     return res.status(401).json({ message: "Invalid token" });
   }
 }
+
 
 
 // API to get all hearing dates
@@ -473,6 +492,21 @@ app.get("/pendingcases", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
