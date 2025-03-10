@@ -77,7 +77,6 @@ input {
 }
 
 table {
-    margin-left: 300px;
     margin-top: 30px;
     width: 77%;
     border-collapse: separate;
@@ -86,6 +85,10 @@ table {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    position: absolute;
+    left: 330px;  /* Move table 330px from the left */
+    top: 30px;    /* Move table 30px from the top */
+    transform: none; /* Remove translateX(-50%) since we don't want centering */
 }
 
 thead {
