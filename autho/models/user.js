@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
   casesWon: Number, // Add casesWon field
   profilePic: String, // Add profilePic field
   otp: Number,
+  secretString: String,
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }]
 });
 
