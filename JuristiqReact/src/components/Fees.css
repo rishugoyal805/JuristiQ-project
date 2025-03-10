@@ -69,7 +69,7 @@ input {
 
 .table-container {
     width: 90%;
-    margin: 20px auto;
+    margin: 5px auto;
     min-height: 70vh;
     display: flex;
     align-items: center;
@@ -77,6 +77,7 @@ input {
 }
 
 table {
+    margin-left: 300px;
     margin-top: 30px;
     width: 77%;
     border-collapse: separate;
@@ -86,9 +87,9 @@ table {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: absolute;
-    left: 330px;  /* Move table 330px from the left */
-    top: 30px;    /* Move table 30px from the top */
-    transform: none; /* Remove translateX(-50%) since we don't want centering */
+    left: 5px;  
+    top: 5px;
+
 }
 
 thead {
