@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Profile.css";
@@ -21,6 +22,7 @@ function Profile() {
 
   const fetchProfile = async () => {
     try {
+      
       const response = await axios.get("http://localhost:3000/profile", { withCredentials: true });
       setAdvocate(response.data);
     } catch (error) {
