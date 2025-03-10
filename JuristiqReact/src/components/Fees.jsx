@@ -16,11 +16,21 @@ function Fees() {
 
   const fetchFees = async () => {
     try {
-      const response = await axios.get("http://localhost:5173/getfees");
+      const response = await axios.get("http://localhost:3000/getfees");
       setFees(response.data);
     } catch (error) {
       console.error("Error fetching fees:", error);
     }
+  };
+
+  const formatDate = (isoString) => {
+    if (!isoString) return "N/A";
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return "Invalid Date";
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const year = date.getUTCFullYear();
+    return `${day}-${month}-${year}`;  // Change "-" to "/" if needed
   };
 
   const handleClick = () => {
@@ -45,9 +55,9 @@ function Fees() {
 
     try {
       if (editingFee) {
-        await axios.put(`http://localhost:5173/updatefee/${editingFee.id}`, feeData);
+        await axios.put(`http://localhost:3000/updatefee/${editingFee._id}`, feeData);
       } else {
-        await axios.post("http://localhost:5173/createfee", feeData);
+        await axios.post("http://localhost:3000/createfee", feeData);
       }
       setShowForm(false);
       setShowTable(true);
@@ -58,10 +68,10 @@ function Fees() {
     }
   };
 
-  const handleDelete = async (feeId) => {
+  const handleDelete = async (fee) => {
     if (!window.confirm("Are you sure you want to delete this fee record?")) return;
     try {
-      await axios.delete(`http://localhost:5173/deletefee/${feeId}`);
+      await axios.delete(`http://localhost:3000/deletefee/${fee._id}`);
       fetchFees();
     } catch (error) {
       console.error("Error deleting fee record:", error);
@@ -69,55 +79,15 @@ function Fees() {
     }
   };
 
-  const handleEdit = (feeItem) => {
-    setEditingFee(feeItem);
-    setShowForm(true);
-    setShowTable(false);
-  };
-
   return (
     <div>
       <SideBar />
       <button className="add-fee-button" onClick={handleClick}>+</button>
 
-      {showForm && (
-        <div className="fee-form">
-          <form className="fee-box" onSubmit={handleFormSubmit}>
-          <label>Case ref no.:</label>
-            <input type="number" name="case_ref_no" required defaultValue={editingFee?.case_ref_no} readOnly={!!editingFee} />
-
-            <label>Client name:</label>
-            <input type="text" name="clientName" required defaultValue={editingFee?.clientName} />
-
-            <label>Total fees:</label>
-            <input type="number" name="totalFees" required defaultValue={editingFee?.fees} />
-
-            <label>Amount Paid:</label>
-            <input type="number" name="amountpaid" required defaultValue={editingFee?.amount_paid} />
-
-            <label>Pending fees:</label>
-            <input type="number" name="pendingFees" required defaultValue={editingFee?.pending_fees} />
-
-            <label>Payment mode:</label>
-            <input type="text" name="mode" required defaultValue={editingFee?.payment_mode} />
-
-            <label>Due Date:</label>
-            <input type="date" name="duedate" required defaultValue={editingFee?.due_date} />
-
-            <label>Remarks:</label>
-            <textarea name="remarks" defaultValue={editingFee?.remarks} />
-
-            <button className="submit-case" type="submit">
-              {editingFee ? "Update" : "Submit"}
-            </button>
-          </form>
-        </div>
-      )}
-
       {showTable && (
         <table>
           <thead>
-          <tr>
+            <tr>
               <th>Case No.</th>
               <th>Client Name</th>
               <th>Total Fees</th>
@@ -138,11 +108,11 @@ function Fees() {
                 <td>{fee.amount_paid}</td>
                 <td>{fee.pending_fees}</td>
                 <td>{fee.payment_mode}</td>
-                <td>{fee.due_date}</td>
+                <td>{formatDate(fee.due_date)}</td>
                 <td>{fee.remarks}</td>
                 <td>
-                  <button className="edit-btn" onClick={() => handleEdit(fee)}>Edit</button>
-                  <button className="delete-btn" onClick={() => handleDelete(fee.case_ref_no)}>Delete</button>
+                  <button className="edit-btn" onClick={() => setEditingFee(fee)}>Edit</button>
+                  <button className="delete-btn" onClick={() => handleDelete(fee)}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -154,3 +124,4 @@ function Fees() {
 }
 
 export default Fees;
+
