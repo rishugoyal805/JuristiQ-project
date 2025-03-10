@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./ForgetPassword.css"; 
+import "./ForgetPassword.css";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +18,9 @@ const ForgetPassword = () => {
     try {
       const response = await axios.post("http://localhost:3000/existing", { email, secretKey });
       setMessage(response.data.message);
+      if (response.data.success) {
+        setTimeout(() => navigate("/"), 2000); // Navigate after 2 seconds
+      }
     } catch (error) {
       setMessage(error.response?.data?.message || "Error connecting to server");
     } finally {
@@ -33,11 +38,11 @@ const ForgetPassword = () => {
               <div className="logo-icon"></div>
               <h1>JuristiQ</h1>
             </div>
-  
+
             <div className="welcome-message">
               <h2>Welcome to JuristiQ</h2>
               <p>Effortless legal case management—secure, organized, and built for advocates.</p>
-              <button className="cta-button" >
+              <button className="cta-button" onClick={() => navigate("/login")}> 
                 Log In Now <span className="arrow-icon">→</span>
               </button>
             </div>
@@ -47,7 +52,7 @@ const ForgetPassword = () => {
             <div className="wave-decoration"></div>
           </div>
         </div>
-  
+
         {/* Right side - Forget Password Form */}
         <div className="forget-password-container">
           <div className="forget-password-box">
@@ -79,8 +84,6 @@ const ForgetPassword = () => {
       </div>
     </div>
   );
-  
 };
 
 export default ForgetPassword;
-
