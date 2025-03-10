@@ -12,8 +12,11 @@ function Calender() {
       try {
         const response = await axios.get("http://localhost:3000/hearings", { withCredentials: true });
 
-        // Convert to Date objects
-        const formattedDates = response.data.map(date => new Date(date.split("T")[0])); // Ensure only the date part
+        // Convert to Date objects and normalize to remove time component
+        const formattedDates = response.data.map(date => {
+          const d = new Date(date);
+          return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        });
 
         setHearingDates(formattedDates);
       } catch (error) {
@@ -28,18 +31,18 @@ function Calender() {
     <div className="calender">
       <Calendar
         tileClassName={({ date }) => {
-          return hearingDates.some((d) => {
-            return d.getFullYear() === date.getFullYear() &&
-                   d.getMonth() === date.getMonth() &&
-                   d.getDate() === date.getDate();
-          }) ? "highlight" : null;
+          const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+          return hearingDates.some(d => d.getTime() === normalizedDate.getTime())
+            ? "highlight" // Apply CSS class
+            : null;
         }}
-        
       />
     </div>
   );
 }
 
 export default Calender;
+
 
 

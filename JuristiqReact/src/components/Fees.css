@@ -30,7 +30,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin-top: 300px;
+    margin-top: 120px;
     
 }
 
@@ -55,10 +55,11 @@ label {
 }
 
 input {
-    padding: 0.4rem;
+    /* padding: 2px; */
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
+    height: auto;
 }
 
 .submit-fee {
@@ -102,7 +103,7 @@ table {
 }
 
 thead {
-    background: #e0e0e0;
+    background: black;
 }
 
 th, td {
@@ -112,8 +113,8 @@ th, td {
 }
 
 th {
-    font-weight: bold;
-    color: #333;
+    /* font-weight: bold; */
+    color: white;
 }
 
 tbody tr:last-child td {

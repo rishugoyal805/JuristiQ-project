@@ -1,12 +1,13 @@
 
 .page-container {
-  min-height: 100vh;
+  max-height: 100vh;
   width: 100vw;
   background-color: #e5e5e5;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
+  padding-bottom: 0px;
   overflow: hidden;
 }
 
@@ -20,6 +21,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 20px;
   overflow: hidden;
+  padding-bottom: 0px;
 }
 
 /* Left side - Branding */
@@ -117,41 +119,24 @@
 .wave-container {
   position: relative;
   width: 100%;
-  height: 250px; /* Adjust height based on your wave */
-  overflow: hidden;
+  height: 250px; /* Adjust height based on your wave */ 
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
-
 .wave-decoration {
   position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://t3.ftcdn.net/jpg/06/08/98/88/360_F_608988880_W8haNckegD4WOj9k4f9HAWsol0SxOURy.jpg') no-repeat center bottom;
+  /* bottom: 0;
+  left: 0; */
+  width: 140%;
+  height: 260px; /* Adjust height for the semi-oval effect */
+  background: url('https://www.hindustantimes.com/ht-img/img/2023/03/23/550x309/The-NJDG-is-a-part-of-the-ongoing-e-courts-integra_1679587800334.jpg') no-repeat center bottom;
   background-size: cover;
+  border-radius: 100% 100% 0 0; /* Creates the semi-oval effect */
+  overflow: hidden;
+  opacity: 0.9;
+  
 }
-
-.gavel-image {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px; /* Adjust size */
-  opacity: 0.7; /* Faded effect */
-  filter: blur(2px); /* Slight blur for fading */
-  animation: arcMotion 3s ease-in-out infinite alternate; /* Arc motion */
-}
-
-.gavel-image img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  mask-image: radial-gradient(circle, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 90%); /* Faded mask */
-}
-
-
 
 
 /* Right side - Login form */
@@ -244,6 +229,7 @@ input:focus {
 
 .forgot-password:hover {
   color: #666;
+  cursor: pointer;
   text-decoration: underline;
 }
 

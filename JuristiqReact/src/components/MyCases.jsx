@@ -122,7 +122,7 @@ function MyCases() {
       {showTable && (
         <table>
           <thead>
-            <tr>
+            <tr >
               <th>Case No.</th>
               <th>Case Title</th>
               <th>Client Name</th>

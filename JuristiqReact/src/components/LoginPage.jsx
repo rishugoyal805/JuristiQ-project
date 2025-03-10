@@ -1,4 +1,3 @@
-"use client"
 
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -75,13 +74,11 @@ function LoginPage() {
 
           </div><br></br>
           <div className="wave-container">
-            <div className="wave-decoration"></div>
-            <div className="gavel-image">
-            <img src="https://t3.ftcdn.net/jpg/06/08/98/88/360_F_608988880_W8haNckegD4WOj9k4f9HAWsol0SxOURy.jpg" alt="Legal gavel" />
-          </div>
-</div>
-
-        </div>
+            <div className="wave-decoration">
+              
+            </div>
+      </div>
+    </div>
 
         {/* Right side - Login form */}
         <div className="login-form-container">
@@ -109,8 +106,8 @@ function LoginPage() {
 
               <div className="form-group">
                 <div className="password-header">
-                  <label htmlFor="password">Password</label>
-                  <div className="forgot-password" onClick={() => navigate("/forgot-password")}>
+              
+                  <div className="forgot-password" onClick={() => navigate("/forget-password")}>
                     Forgot password?
                   </div>
                 </div>

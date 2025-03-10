@@ -11,7 +11,7 @@ function Headlines() {
       try {
         const response = await axios.get("https://newsapi.org/v2/everything", {
           params: {
-            q: "court",
+            q: "law",
             sortBy: "publishedAt",
             pageSize: 5,
             apiKey: "3b058bd8af81404bbc2c32e60d145351",

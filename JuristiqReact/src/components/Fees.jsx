@@ -20,7 +20,6 @@ function Fees() {
       setFees(response.data);
     } catch (error) {
       console.error("Error fetching fees:", error);
-      alert("Failed to fetch fees. Please try again.");
     }
   };
 

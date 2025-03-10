@@ -22,7 +22,7 @@
     justify-content: center;
     align-items: center;
     height: auto;
-    margin-top: 150px;
+    margin-top: 15px;
 }
 .case-box{
     background: white;
@@ -90,7 +90,7 @@ input {
   }
   
   thead {
-    background: #e0e0e0; /* Slightly darker grey */
+    background: black; /* Slightly darker grey */
   }
   
   th, td {
@@ -100,8 +100,8 @@ input {
   }
   
   th {
-    font-weight: bold;
-    color: #333;
+    /* font-weight: bold; */
+    color: white;
   }
   
   tbody tr:last-child td {
