@@ -7,6 +7,7 @@ function SignUp() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [secretString, setSecretString] = useState("");
   const [age, setAge] = useState("");
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -55,6 +56,7 @@ function SignUp() {
         email,
         password,
         age,
+        secretString
       });
 
       if (response.status === 200) {
@@ -97,6 +99,9 @@ function SignUp() {
             <>
               <label>Create Password</label>
               <input type="password" required placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+
+              <label>Enter secret string</label>
+              <input type="password" required placeholder="Enter secret string" value={secretString} onChange={(e) => setSecretString(e.target.value)} />
               <button type="submit" className="SignUp-button" onClick={handleSignUp}>
                 Sign Up
               </button>
