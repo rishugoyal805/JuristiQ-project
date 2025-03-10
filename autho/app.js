@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const jwt = require('jsonwebtoken');
 const userModel = require("./models/user");
 const clientModel= require("./models/client");
+const FeesModel = require("./models/fees");
+
  const moment = require('moment');
  const twilio = require('twilio');
   const cors = require("cors");
@@ -489,9 +491,74 @@ app.get("/pendingcases", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+// ✅ Create Fee Record
+app.post("/createfee", async (req, res) => {
+  try {
+    const newFee = new FeesModel(req.body);
+    await newFee.save();
+    res.status(201).json({ message: "Fee record created successfully!" });
+  } catch (error) {
+    console.error("Error creating fee record:", error);
+    res.status(500).json({ message: "Failed to create fee record" });
+  }
+});
+
+// ✅ Get All Fees
+app.get("/getfees", async (req, res) => {
+  try {
+    const fees = await FeesModel.find();
+    res.json(fees);
+  } catch (error) {
+    console.error("Error fetching fees:", error);
+    res.status(500).json({ message: "Failed to retrieve fees" });
+  }
+});
+
+
+app.put("/updatefee/:id", async (req, res) => {
+  try {
+    const updatedFee = await FeesModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedFee) return res.status(404).json({ message: "Fee record not found" });
+    res.json({ message: "Fee record updated successfully!", updatedFee });
+  } catch (error) {
+    console.error("Error updating fee record:", error);
+    res.status(500).json({ message: "Failed to update fee record" });
+  }
+});
+
+
+app.delete("/deletefee/:id", async (req, res) => {
+  try {
+    const deletedFee = await FeesModel.findByIdAndDelete(req.params.id);
+    if (!deletedFee) return res.status(404).json({ message: "Fee record not found" });
+    res.json({ message: "Fee record deleted successfully!" });
+  } catch (error) {
+    console.error("Error deleting fee record:", error);
+    res.status(500).json({ message: "Failed to delete fee record" });
+  }
+});
+
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
