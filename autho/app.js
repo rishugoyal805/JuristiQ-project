@@ -171,15 +171,7 @@ function isLoggedIn(req, res, next) {
 
 
 
-// API to get all hearing dates
-app.get("/hearings", async (req, res) => {
-  try {
-    const cases = await casesModel.find({}, "hearingDate"); // Fetch only hearingDate
-    res.json(cases.map((c) => c.hearingDate)); // Convert to JSON array
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch hearing dates" });
-  }
-});
+
 
 
 // GET Profile Data
