@@ -27,16 +27,19 @@ function Fees() {
     if (!isoString) return "N/A";
     const date = new Date(isoString);
     if (isNaN(date.getTime())) return "Invalid Date";
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const year = date.getUTCFullYear();
-    return `${day}-${month}-${year}`;  // Change "-" to "/" if needed
+    return date.toISOString().split("T")[0]; // Returns YYYY-MM-DD
   };
 
   const handleClick = () => {
     setShowForm(true);
     setShowTable(false);
     setEditingFee(null);
+  };
+
+  const handleEdit = (fee) => {
+    setEditingFee(fee);
+    setShowForm(true);
+    setShowTable(false);
   };
 
   const handleFormSubmit = async (e) => {
@@ -82,7 +85,7 @@ function Fees() {
   return (
     <div>
       <SideBar />
-      <button className="add-fee-button" onClick={handleClick}>+</button>
+      {showTable && <button className="add-fee-button" onClick={handleClick}>+</button>}
 
       {showTable && (
         <table>
@@ -100,8 +103,8 @@ function Fees() {
             </tr>
           </thead>
           <tbody>
-            {fees.map((fee, index) => (
-              <tr key={index}>
+            {fees.map((fee) => (
+              <tr key={fee._id}>
                 <td>{fee.case_ref_no}</td>
                 <td>{fee.clientName}</td>
                 <td>{fee.fees}</td>
@@ -111,7 +114,7 @@ function Fees() {
                 <td>{formatDate(fee.due_date)}</td>
                 <td>{fee.remarks}</td>
                 <td>
-                  <button className="edit-btn" onClick={() => setEditingFee(fee)}>Edit</button>
+                  <button className="edit-btn" onClick={() => handleEdit(fee)}>Edit</button>
                   <button className="delete-btn" onClick={() => handleDelete(fee)}>Delete</button>
                 </td>
               </tr>
@@ -119,9 +122,61 @@ function Fees() {
           </tbody>
         </table>
       )}
+
+      {showForm && (
+        <form onSubmit={handleFormSubmit} className="fee-form">
+          <label>
+            Case No:
+            <input type="text" name="case_ref_no" defaultValue={editingFee?.case_ref_no || ""} required />
+          </label>
+
+          <label>
+            Client Name:
+            <input type="text" name="clientName" defaultValue={editingFee?.clientName || ""} required />
+          </label>
+
+          <label>
+            Total Fees:
+            <input type="number" name="totalFees" defaultValue={editingFee?.fees || ""} required />
+          </label>
+
+          <label>
+            Amount Paid:
+            <input type="number" name="amountpaid" defaultValue={editingFee?.amount_paid || ""} required />
+          </label>
+
+          <label>
+            Pending Fees:
+            <input type="number" name="pendingFees" defaultValue={editingFee?.pending_fees || ""} required />
+          </label>
+
+          <label>
+            Payment Mode:
+            <select name="mode" defaultValue={editingFee?.payment_mode || ""} required>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Online">Online</option>
+            </select>
+          </label>
+
+          <label>
+            Due Date:
+            <input type="date" name="duedate" defaultValue={formatDate(editingFee?.due_date)} required />
+          </label>
+
+          <label>
+            Remarks:
+            <textarea name="remarks" defaultValue={editingFee?.remarks || ""}></textarea>
+          </label>
+
+          <button type="submit">{editingFee ? "Update" : "Add"} Fee</button>
+          <button type="button" onClick={() => { setShowForm(false); setShowTable(true); }}>Cancel</button>
+        </form>
+      )}
     </div>
   );
 }
 
 export default Fees;
+
 
