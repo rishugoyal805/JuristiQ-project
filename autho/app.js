@@ -84,7 +84,7 @@ app.get("/getcases", async (req, res) => {
 
 
  app.post('/register', async (req,res)=>{
-    let { name, age, email,password}= req.body;//so that you dont have to write req.body with variables again and again
+    let { name, age, email,password,secretString}= req.body;//so that you dont have to write req.body with variables again and again
 
     let user = await userModel.deleteOne({email});
     // if(user) return res.status(500).send("user already registered");
@@ -94,7 +94,8 @@ app.get("/getcases", async (req, res) => {
                name,
                age,
                 email,
-                password: hash
+                password: hash,
+                secretString
             });
           let token=  jwt.sign({email: email, userid: user._id},"secretkey");
           res.cookie("token", token);
@@ -554,6 +555,52 @@ app.delete("/deletefee/:id", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
