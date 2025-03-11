@@ -72,7 +72,7 @@ app.get("/getcases", async (req, res) => {
     // Transform cases to match frontend expectations
     const formattedCases = cases.map(c => ({
       ...c.toObject(),  // Convert Mongoose document to plain object
-      next_hearing: c.nextHearing  // Ensure field matches frontend key
+      nextHearing: c.nextHearing  // Ensure field matches frontend key
     }));
 
     res.status(200).json(formattedCases);
@@ -327,7 +327,7 @@ app.get("/casesinfo",isLoggedIn,async(req,res)=>{
 });
 app.post("/createcase", async (req, res) => {
   try {
-      const { case_ref_no, caseTitle, clientName, status, next_hearing, fees, pending_fees } = req.body;
+      const { case_ref_no, caseTitle, clientName, status, nextHearing, fees, pending_fees } = req.body;
 
       // Create a new case
       const newCase = await casesModel.create({
@@ -335,7 +335,7 @@ app.post("/createcase", async (req, res) => {
           caseTitle,
           clientName,
           status,
-          nextHearing: next_hearing, // Match field name in schema
+          nextHearing: nextHearing, // Match field name in schema
           fees,
           pending_fees,
       });
@@ -349,16 +349,16 @@ app.post("/createcase", async (req, res) => {
 app.put("/updatecase/:case_ref_no", async (req, res) => {
   try {
     const updatedCase = await casesModel.findOneAndUpdate(
-      { case_ref_no: req.params.case_ref_no }, // Match by case_ref_no from URL
+      { case_ref_no: req.params.case_ref_no },
       {
         caseTitle: req.body.caseTitle,
         clientName: req.body.clientName,
         status: req.body.status,
-        nextHearing: req.body.next_hearing,
+        nextHearing: req.body.nextHearing ? new Date(req.body.nextHearing) : null, // Convert to Date
         fees: req.body.fees,
         pending_fees: req.body.pending_fees,
       },
-      { new: true } // Ensure the updated document is returned
+      { new: true }
     );
 
     if (!updatedCase) {
@@ -371,6 +371,7 @@ app.put("/updatecase/:case_ref_no", async (req, res) => {
     res.status(500).json({ success: false, message: "An error occurred while updating the case" });
   }
 });
+
 // Get client details by case reference number
 app.get("/clients/:case_ref_no", async (req, res) => {
   try {
@@ -469,8 +470,8 @@ app.delete("/deleteadv/:email", async (req, res) => {
 
 app.get("/hearings", async (req, res) => {
   try {
-    const cases = await casesModel.find({}, "hearingDate"); // Fetch only hearingDate
-    res.json(cases.map((c) => c.hearingDate)); // Convert to JSON array
+    const cases = await casesModel.find({}, "nextHearing"); // Fetch only hearingDate
+    res.json(cases.map((c) => c.nextHearing)); // Convert to JSON array
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch hearing dates" });
   }
@@ -555,6 +556,8 @@ app.delete("/deletefee/:id", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
 
 
 
