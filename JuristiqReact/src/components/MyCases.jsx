@@ -37,7 +37,7 @@ function MyCases() {
       caseTitle: formData.get("caseTitle"),
       clientName: formData.get("clientName"),
       status: formData.get("status"),
-      next_hearing: formData.get("hearingDate"),
+      nextHearing: formData.get("hearingDate"),
       fees: Number(formData.get("totalFees")),         // ✅ Convert to Number
       pending_fees: Number(formData.get("pendingFees")) // ✅ Convert to Number
     };
@@ -104,7 +104,13 @@ function MyCases() {
             </select>
 
             <label>Next hearing:</label>
-            <input type="date" name="hearingDate" required defaultValue={editingCase?.next_hearing} />
+            <input 
+  type="date" 
+  name="hearingDate" 
+  required 
+  defaultValue={editingCase?.nextHearing ? new Date(editingCase.nextHearing).toISOString().split('T')[0] : ''}
+/>
+
 
             <label>Total fees:</label>
             <input type="number" name="totalFees" required defaultValue={editingCase?.fees} />
@@ -140,7 +146,7 @@ function MyCases() {
       <td>{caseItem.caseTitle}</td>
       <td>{caseItem.clientName}</td>
       <td>{caseItem.status}</td>
-      <td>{new Date(caseItem.next_hearing).toLocaleDateString("en-GB")}</td>  {/* Formatted Date */}
+      <td>{new Date(caseItem.nextHearing).toLocaleDateString("en-GB")}</td>  {/* Formatted Date */}
       <td>{caseItem.fees}</td>
       <td>{caseItem.pending_fees}</td>
       <td>
@@ -157,5 +163,8 @@ function MyCases() {
 }
 
 export default MyCases;
+
+
+
 
 
