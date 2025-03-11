@@ -21,9 +21,9 @@ const ForgetPassword = () => {
       console.log("API Response:", response.data); // Debugging response
       setMessage(response.data.message);
   
-      if (response.data.success) {
+      if (response.status==200) {
         console.log("Success received, navigating...");
-        navigate("/");  // Navigate to login
+        navigate("/home");  // Navigate to login
       } else {
         console.log("Success flag is false, not navigating.");
       }
@@ -96,6 +96,8 @@ const ForgetPassword = () => {
 };
 
 export default ForgetPassword;
+
+
 
 
 
