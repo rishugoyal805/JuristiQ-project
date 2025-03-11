@@ -25,7 +25,7 @@ function Headlines() {
   
     fetchNews(); // Initial fetch
   
-    const interval = setInterval(fetchNews, 300000); // Fetch every 5 minutes
+    const interval = setInterval(fetchNews, 1800000 ); // Fetch every 30 minutes
   
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);

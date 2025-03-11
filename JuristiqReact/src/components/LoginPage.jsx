@@ -55,6 +55,12 @@ function LoginPage() {
 
   return (
     <div className="page-container">
+      <div className="background-decoration">
+        <div className="decoration-circle"></div>
+        <div className="decoration-circle"></div>
+        <div className="decoration-circle"></div>
+      </div>
+    
       <div className="login-container">
         {/* Left side - Brand/Image */}
         <div className="login-branding">

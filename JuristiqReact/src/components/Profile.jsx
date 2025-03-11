@@ -64,8 +64,10 @@ function Profile() {
   };
 
   return (
+    
     <div className={`profile-container ${editMode ? "edit-mode" : ""}`}>
       <SideBar />
+      
       <div className="profile-content">
         <h2>Advocate Profile</h2>
         <div className="profile-pic-section">

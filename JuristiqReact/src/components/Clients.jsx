@@ -65,7 +65,7 @@ function Clients() {
               <label>Phone:</label>
               <input type="tel" name="phone" required />
               <label>Case ref no.:</label>
-              <input type="number" name="case_ref_no" required />
+              <input type="number" name="case_ref_no" required  min="1" />
               <button className="submit-client" type="submit">Submit</button>
             </form>
           </div>

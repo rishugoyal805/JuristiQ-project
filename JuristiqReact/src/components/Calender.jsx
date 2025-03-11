@@ -2,21 +2,21 @@ import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import axios from "axios";
 import "react-calendar/dist/Calendar.css";
-import "./calender.css"; // Custom styles for red marking
-
+import "./calender.css"; 
 function Calender() {
-  const [hearingDates, setHearingDates] = useState([]);
+  const [hearingDate, setHearingDates] = useState([]);
 
   useEffect(() => {
     const fetchHearingDates = async () => {
       try {
         const response = await axios.get("http://localhost:3000/hearings", { withCredentials: true });
 
-        // Convert to Date objects and normalize to remove time component
-        const formattedDates = response.data.map(date => {
-          const d = new Date(date);
-          return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-        });
+        console.log("Fetched hearing dates:", response.data); // Debugging log
+
+        // Convert dates to YYYY-MM-DD format for accurate comparison
+        const formattedDates = response.data.map(date => new Date(date).toISOString().split("T")[0]);
+
+        console.log("Formatted hearing dates:", formattedDates); // Debugging log
 
         setHearingDates(formattedDates);
       } catch (error) {
@@ -31,11 +31,9 @@ function Calender() {
     <div className="calender">
       <Calendar
         tileClassName={({ date }) => {
-          const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+          const formattedDate = date.toISOString().split("T")[0]; // Convert to YYYY-MM-DD format
 
-          return hearingDates.some(d => d.getTime() === normalizedDate.getTime())
-            ? "highlight" // Apply CSS class
-            : null;
+          return hearingDate.includes(formattedDate) ? "highlight" : null;
         }}
       />
     </div>
@@ -43,6 +41,3 @@ function Calender() {
 }
 
 export default Calender;
-
-
-

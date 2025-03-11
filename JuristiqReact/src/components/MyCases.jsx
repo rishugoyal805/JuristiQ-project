@@ -89,7 +89,7 @@ function MyCases() {
         <div className="case-form">
           <form className="case-box" onSubmit={handleFormSubmit}>
             <label>Case ref no.:</label>
-            <input type="number" name="case_ref_no" required defaultValue={editingCase?.case_ref_no} readOnly={!!editingCase} />
+            <input type="number" name="case_ref_no" min="1" required defaultValue={editingCase?.case_ref_no} readOnly={!!editingCase} />
 
             <label>Case Title:</label>
             <input type="text" name="caseTitle" required defaultValue={editingCase?.caseTitle} />
@@ -107,10 +107,10 @@ function MyCases() {
             <input type="date" name="hearingDate" required defaultValue={editingCase?.next_hearing} />
 
             <label>Total fees:</label>
-            <input type="number" name="totalFees" required defaultValue={editingCase?.fees} />
+            <input type="number" name="totalFees" min="1" required defaultValue={editingCase?.fees} />
 
             <label>Pending fees:</label>
-            <input type="number" name="pendingFees" required defaultValue={editingCase?.pending_fees} />
+            <input type="number" name="pendingFees" min="1"  required defaultValue={editingCase?.pending_fees} />
 
             <button className="submit-case" type="submit">
               {editingCase ? "Update" : "Submit"}

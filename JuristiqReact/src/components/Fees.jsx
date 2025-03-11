@@ -137,13 +137,13 @@ function Fees() {
               <input type="text" name="clientName" defaultValue={editingFee?.clientName || ""} required />
 
               <label>Total Fees:</label>
-              <input type="number" name="totalFees" defaultValue={editingFee?.fees || ""} required />
+              <input type="number" name="totalFees" min="1" defaultValue={editingFee?.fees || ""} required />
 
               <label>Amount Paid:</label>
-              <input type="number" name="amountPaid" defaultValue={editingFee?.amount_paid || ""} required />
+              <input type="number" name="amountPaid" min="1" defaultValue={editingFee?.amount_paid || ""} required />
 
               <label>Pending Fees:</label>
-              <input type="number" name="pendingFees" defaultValue={editingFee?.pending_fees || ""} required />
+              <input type="number" name="pendingFees" min="1" defaultValue={editingFee?.pending_fees || ""} required />
 
               <label>Payment Mode:</label>
               <select name="mode" defaultValue={editingFee?.payment_mode || ""} required>
