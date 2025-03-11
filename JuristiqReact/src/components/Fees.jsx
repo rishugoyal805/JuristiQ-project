@@ -91,9 +91,9 @@ function Fees() {
       {showTable && (
         <div className="fee-table-container">
           <table className="fee-table">
-            <thead>
+            <thead className="fee-thead">
               <tr>
-                <th>Case No.</th>
+                <th className="fee-th">Case No.</th>
                 <th>Client Name</th>
                 <th>Total Fees</th>
                 <th>Amount Paid</th>
@@ -104,10 +104,10 @@ function Fees() {
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="fee-tbody">
               {fees.map((fee) => (
                 <tr key={fee._id}>
-                  <td>{fee.case_ref_no}</td>
+                  <td className="fee-td">{fee.case_ref_no}</td>
                   <td>{fee.clientName}</td>
                   <td>{fee.fees}</td>
                   <td>{fee.amount_paid}</td>

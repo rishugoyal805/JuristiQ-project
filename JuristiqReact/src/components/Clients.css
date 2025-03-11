@@ -83,3 +83,97 @@ form {
     text-align: center;
     border: 1px solid #ddd;
 }
+
+/* Media Queries */
+@media (max-width: 270px) {
+    .clients-container {
+        margin-left: 10px;
+        justify-content: center;
+    }
+    .client-card {
+        width: 90%;
+        font-size: 12px;
+    }
+    .client-form {
+        width: 90%;
+        font-size: 14px;
+    }
+    input, select {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 271px) and (max-width: 380px) {
+    .clients-container {
+        margin-left: 10px;
+        justify-content: center;
+    }
+    .client-card {
+        width: 85%;
+        font-size: 14px;
+    }
+    .client-form {
+        width: 85%;
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 381px) and (max-width: 520px) {
+    .clients-container {
+        margin-left: 15px;
+        justify-content: center;
+    }
+    .client-card {
+        width: 80%;
+        font-size: 15px;
+    }
+    .client-form {
+        width: 80%;
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 521px) and (max-width: 640px) {
+    .clients-container {
+        margin-left: 20px;
+        justify-content: center;
+    }
+    .client-card {
+        width: 75%;
+        font-size: 16px;
+    }
+    .client-form {
+        width: 75%;
+        font-size: 17px;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 860px) {
+    .clients-container {
+        margin-left: 30px;
+        justify-content: center;
+    }
+    .client-card {
+        width: 70%;
+        font-size: 17px;
+    }
+    .client-form {
+        width: 70%;
+        font-size: 18px;
+    }
+}
+
+@media (min-width: 861px) and (max-width: 950px) {
+    .clients-container {
+        margin-left: 50px;
+        justify-content: flex-start;
+    }
+    .client-card {
+        width: 65%;
+        font-size: 18px;
+    }
+    .client-form {
+        width: 65%;
+        font-size: 19px;
+    }
+}

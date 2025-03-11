@@ -66,28 +66,28 @@ input {
 }
 
 .table-container {
-    width: 90%;
-    margin: 5px auto;
-    min-height: 70vh; /* Ensures it takes most of the page initially */
-    display: flex;
-    align-items: center; /* Centers the table vertically when empty */
-    justify-content: center;
-    
-  }
+  width: 90%;
+  margin: 5px auto;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
   
   table {
     margin-left: 300px;
-    align-items: center; 
+    margin-top: 20px;
     width: 77%;
     border-collapse: separate;
     border-spacing: 0;
-    background: #f8f9fa; /* Light grey background */
+    background: #f8f9fa;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle 3D effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     position: absolute;
-    left: 10px;  /* Move table 330px from the left */
+    left: 5px;  
     top: 5px;
+
   }
   
   thead {
@@ -143,3 +143,56 @@ input {
     background: #b22222;
   }
   
+
+  /* Media Queries */
+
+  @media (max-width: 270px) {
+   
+   table {
+        margin-top: 70px;
+        margin-left: 5px;
+        width: 75%;
+        margin-right: 10px;
+    }
+    thead th, tbody td {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 271px) and (max-width: 520px) {
+    table {
+        margin-top: 200px;
+        margin-left: 5px;
+        width: 85%;
+        font-size: 14px;
+    }
+    thead th, tbody td {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 521px) and (max-width: 860px) {
+    table {
+        margin-top: 70px;
+        margin-left: 10px;
+        width: 90%;
+  
+    }
+    thead th, tbody td {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 861px) and (max-width: 950px) {
+    table {
+        margin-top: 200px;
+        margin-left: 10px;
+        width: 95%;
+        font-size: 16px;
+    }
+    thead th, tbody td {
+        font-size: 16px;
+    }
+}
+
+

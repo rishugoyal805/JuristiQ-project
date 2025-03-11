@@ -126,7 +126,8 @@ function MyCases() {
       )}
 
       {showTable && (
-        <table>
+      <div className="table-container">
+        <table >
           <thead>
             <tr >
               <th>Case No.</th>
@@ -140,23 +141,24 @@ function MyCases() {
             </tr>
           </thead>
           <tbody>
-  {cases.map((caseItem, index) => (
-    <tr key={index}>
-      <td>{caseItem.case_ref_no}</td>
-      <td>{caseItem.caseTitle}</td>
-      <td>{caseItem.clientName}</td>
-      <td>{caseItem.status}</td>
-      <td>{new Date(caseItem.nextHearing).toLocaleDateString("en-GB")}</td>  {/* Formatted Date */}
-      <td>{caseItem.fees}</td>
-      <td>{caseItem.pending_fees}</td>
-      <td>
-        <button className="edit-btn" onClick={() => handleEdit(caseItem)}>Update</button>
-        <button className="delete-btn" onClick={() => handleDelete(caseItem.case_ref_no)}>Delete</button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+          {cases.map((caseItem, index) => (
+          <tr key={index}>
+            <td>{caseItem.case_ref_no}</td>
+            <td>{caseItem.caseTitle}</td>
+            <td>{caseItem.clientName}</td>
+            <td>{caseItem.status}</td>
+            <td>{new Date(caseItem.nextHearing).toLocaleDateString("en-GB")}</td>  {/* Formatted Date */}
+            <td>{caseItem.fees}</td>
+            <td>{caseItem.pending_fees}</td>
+            <td>
+              <button className="edit-btn" onClick={() => handleEdit(caseItem)}>Update</button>
+              <button className="delete-btn" onClick={() => handleDelete(caseItem.case_ref_no)}>Delete</button>
+            </td>
+          </tr>
+            ))}
+          </tbody>
         </table>
+      </div>
       )}
     </div>
   );

@@ -77,7 +77,7 @@ input {
     background-color: #1d1c1c;
 }
 
-.table-container {
+.fee-table-container {
     width: 90%;
     margin: 5px auto;
     min-height: 70vh;
@@ -86,7 +86,7 @@ input {
     justify-content: center;
 }
 
-table {
+.fee-table {
     margin-left: 300px;
     margin-top: 30px;
     width: 77%;
@@ -102,26 +102,26 @@ table {
 
 }
 
-thead {
+.fee-thead {
     background: black;
 }
 
-th, td {
+.fee-th, .fee-td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-th {
+.fee-th {
     /* font-weight: bold; */
     color: white;
 }
 
-tbody tr:last-child td {
+.fee-tbody tr:last-child td {
     border-bottom: none;
 }
 
-tbody tr:hover {
+.fee-tbody tr:hover {
     background: #eaeaea;
     transition: 0.3s;
 }
@@ -170,3 +170,55 @@ tbody tr:hover {
     background-color: #1d1c1c;
   }
   
+  @media (max-width: 270px) {
+   
+    .fee-table {
+         margin-top: 70px;
+         margin-left: 5px;
+         width: 75%;
+         margin-right: 10px;
+     }
+     .fee-thead th, .fee-tbody td {
+         font-size: 12px;
+     }
+ }
+ 
+ @media (min-width: 271px) and (max-width: 520px) {
+     .fee-table {
+         margin-top: 80px;
+         margin-left: 5px;
+         width: 70%;
+         font-size: 14px;
+         margin-right: 5px;
+     }
+     .fee-thead th, .fee-tbody td {
+         font-size: 14px;
+     }
+ }
+ 
+ @media (min-width: 521px) and (max-width: 860px) {
+     .fee-table {
+         margin-top: 70px;
+         margin-left: 10px;
+         width: 95%;
+   
+     }
+     .fee-thead th, .fee-tbody td {
+         font-size: 13px;
+     }
+ }
+ 
+ @media (min-width: 861px) and (max-width: 950px) {
+     .fee-table {
+         margin-top: 80px;
+         margin-left: 10px;
+         width: 95%;
+         font-size: 16px;
+     }
+     .fee-thead th, .fee-tbody td {
+         font-size: 16px;
+     }
+ }
+ 
+ 
+ 

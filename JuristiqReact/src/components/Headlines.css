@@ -64,3 +64,37 @@
 .headlines a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
+
+@media screen and (max-width: 950px) {
+    .headlines {
+        width: 90%; /* Reduce width */
+        height: auto;
+        padding: 15px;
+    }
+
+    .headlines h2 {
+        font-size: 18px; /* Reduce title size */
+    }
+
+    .headlines a {
+        font-size: 12px; /* Adjust font size for readability */
+        padding: 6px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .headlines {
+        width: 100%; /* Full width for mobile */
+        height: auto;
+        padding: 10px;
+    }
+
+    .headlines h2 {
+        font-size: 16px;
+    }
+
+    .headlines a {
+        font-size: 10px;
+        padding: 5px;
+    }
+}

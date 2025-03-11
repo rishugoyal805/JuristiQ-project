@@ -10,9 +10,7 @@ body {
     linear-gradient(45deg, rgba(210, 180, 140, 0.2) 25%, transparent 25%),
     linear-gradient(-45deg, rgba(210, 180, 140, 0.2) 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, rgba(210, 180, 140, 0.2) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(210, 180, 140, 0.2) 75%),
-    /* Gradient Overlay */
-    linear-gradient(to right, rgba(245, 245, 245, 0.9), rgba(200, 200, 200, 0.6)); 
+    linear-gradient(-45deg, transparent 75%, rgba(210, 180, 140, 0.2) 75%);
 
   background-size: 20px 20px, 20px 20px, 20px 20px, 20px 20px, cover;
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px, center;
@@ -298,5 +296,119 @@ input:focus {
   
   .form-title {
     font-size: 1.5rem;
+  }
+}
+
+
+/* Media Queries */
+
+@media (max-width: 270px) {
+  .SignUp-container {
+    padding: 1rem 0.5rem;
+  }
+  .SignUp-box {
+    width: 95%;
+    padding: 1rem;
+  }
+  .form-title {
+    font-size: 1.2rem;
+  }
+  input {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+  .SignUp-button {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (min-width: 271px) and (max-width: 380px) {
+  .SignUp-box {
+    width: 90%;
+    padding: 1.2rem;
+  }
+  .form-title {
+    font-size: 1.3rem;
+  }
+  input {
+    font-size: 0.85rem;
+    padding: 0.7rem;
+  }
+  .SignUp-button {
+    font-size: 0.85rem;
+    padding: 0.7rem;
+  }
+}
+
+@media (min-width: 381px) and (max-width: 520px) {
+  .SignUp-box {
+    width: 85%;
+    padding: 1.5rem;
+  }
+  .form-title {
+    font-size: 1.4rem;
+  }
+  input {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+  .SignUp-button {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+}
+
+@media (min-width: 521px) and (max-width: 640px) {
+  .SignUp-box {
+    width: 80%;
+    padding: 1.8rem;
+  }
+  .form-title {
+    font-size: 1.5rem;
+  }
+  input {
+    font-size: 0.95rem;
+    padding: 0.9rem;
+  }
+  .SignUp-button {
+    font-size: 0.95rem;
+    padding: 0.9rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 860px) {
+  .SignUp-box {
+    width: 70%;
+    padding: 2rem;
+  }
+  .form-title {
+    font-size: 1.6rem;
+  }
+  input {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+  .SignUp-button {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1200px) {
+  .SignUp-box {
+    width: 60%;
+    padding: 2.2rem;
+  }
+  .form-title {
+    font-size: 1.7rem;
+  }
+  input {
+    font-size: 1.1rem;
+    padding: 1.1rem;
+  }
+  .SignUp-button {
+    font-size: 1.1rem;
+    padding: 1.1rem;
   }
 }
