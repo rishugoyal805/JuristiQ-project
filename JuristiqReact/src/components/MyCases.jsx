@@ -17,7 +17,14 @@ function MyCases() {
   const fetchCases = async () => {
     try {
       const response = await axios.get("http://localhost:3000/getcases");
-      setCases(response.data);
+
+      // Ensure `nextHearing` is properly parsed as Date objects
+      const formattedCases = response.data.map(caseItem => ({
+        ...caseItem,
+        nextHearing: caseItem.nextHearing ? new Date(caseItem.nextHearing) : null
+      }));
+
+      setCases(formattedCases);
     } catch (error) {
       console.error("Error fetching cases:", error);
     }
@@ -33,11 +40,11 @@ function MyCases() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const newCase = {
-      case_ref_no: Number(formData.get("case_ref_no")),  // ✅ Convert to Number
+      case_ref_no: Number(formData.get("case_ref_no")), // ✅ Convert to Number
       caseTitle: formData.get("caseTitle"),
       clientName: formData.get("clientName"),
       status: formData.get("status"),
-      nextHearing: formData.get("hearingDate"),
+      nextHearing: formData.get("hearingDate") ? new Date(formData.get("hearingDate")).toISOString() : null, // ✅ Convert to ISO String
       fees: Number(formData.get("totalFees")),         // ✅ Convert to Number
       pending_fees: Number(formData.get("pendingFees")) // ✅ Convert to Number
     };
@@ -89,7 +96,7 @@ function MyCases() {
         <div className="case-form">
           <form className="case-box" onSubmit={handleFormSubmit}>
             <label>Case ref no.:</label>
-            <input type="number" name="case_ref_no" min="1" required defaultValue={editingCase?.case_ref_no} readOnly={!!editingCase} />
+            <input type="number" name="case_ref_no" required defaultValue={editingCase?.case_ref_no} readOnly={!!editingCase} />
 
             <label>Case Title:</label>
             <input type="text" name="caseTitle" required defaultValue={editingCase?.caseTitle} />
@@ -101,22 +108,26 @@ function MyCases() {
             <select name="status" required defaultValue={editingCase?.status}>
               <option value="Pending">Pending</option>
               <option value="Active">Active</option>
+              <option value="Closed">Closed</option>
             </select>
 
             <label>Next hearing:</label>
             <input 
-  type="date" 
-  name="hearingDate" 
-  required 
-  defaultValue={editingCase?.nextHearing ? new Date(editingCase.nextHearing).toISOString().split('T')[0] : ''}
-/>
-
+              type="date" 
+              name="hearingDate" 
+              required 
+              defaultValue={
+                editingCase?.nextHearing 
+                  ? new Date(editingCase.nextHearing).toISOString().split('T')[0] 
+                  : ''
+              }
+            />
 
             <label>Total fees:</label>
-            <input type="number" name="totalFees" min="1" required defaultValue={editingCase?.fees} />
+            <input type="number" name="totalFees" required defaultValue={editingCase?.fees} />
 
             <label>Pending fees:</label>
-            <input type="number" name="pendingFees" min="1"  required defaultValue={editingCase?.pending_fees} />
+            <input type="number" name="pendingFees" required defaultValue={editingCase?.pending_fees} />
 
             <button className="submit-case" type="submit">
               {editingCase ? "Update" : "Submit"}
@@ -128,7 +139,7 @@ function MyCases() {
       {showTable && (
         <table>
           <thead>
-            <tr >
+            <tr>
               <th>Case No.</th>
               <th>Case Title</th>
               <th>Client Name</th>
@@ -140,22 +151,27 @@ function MyCases() {
             </tr>
           </thead>
           <tbody>
-  {cases.map((caseItem, index) => (
-    <tr key={index}>
-      <td>{caseItem.case_ref_no}</td>
-      <td>{caseItem.caseTitle}</td>
-      <td>{caseItem.clientName}</td>
-      <td>{caseItem.status}</td>
-      <td>{new Date(caseItem.nextHearing).toLocaleDateString("en-GB")}</td>  {/* Formatted Date */}
-      <td>{caseItem.fees}</td>
-      <td>{caseItem.pending_fees}</td>
-      <td>
-        <button className="edit-btn" onClick={() => handleEdit(caseItem)}>Update</button>
-        <button className="delete-btn" onClick={() => handleDelete(caseItem.case_ref_no)}>Delete</button>
-      </td>
-    </tr>
-  ))}
-</tbody>
+            {cases.map((caseItem, index) => (
+              <tr key={index}>
+                <td>{caseItem.case_ref_no}</td>
+                <td>{caseItem.caseTitle}</td>
+                <td>{caseItem.clientName}</td>
+                <td>{caseItem.status}</td>
+                <td>
+                  {caseItem.nextHearing 
+                    ? new Date(caseItem.nextHearing).toLocaleDateString("en-GB") 
+                    : "N/A"
+                  }
+                </td>  
+                <td>{caseItem.fees}</td>
+                <td>{caseItem.pending_fees}</td>
+                <td>
+                  <button className="edit-btn" onClick={() => handleEdit(caseItem)}>Update</button>
+                  <button className="delete-btn" onClick={() => handleDelete(caseItem.case_ref_no)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       )}
     </div>
@@ -163,6 +179,7 @@ function MyCases() {
 }
 
 export default MyCases;
+
 
 
 
