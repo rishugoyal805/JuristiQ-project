@@ -7,7 +7,7 @@ const casesSchema= mongoose.Schema({
     clientName: String,
     status: {
       type: String,
-      enum: ['Closed', 'Active', 'Pending'] // Enum validation for status
+      enum: ['Closed', 'Active', 'Pending','won'] // Enum validation for status
       // Optionally, you can make status a required field
     },
     nextHearing: Date,
