@@ -159,7 +159,7 @@ function Clients() {
       </div>
 
       {/* Add Client Button */}
-      <button onClick={() => setShowForm(true)} className="add-client-button">
+      <button onClick={() => setShowForm(true)} className="add-button">
         <svg
           className="plus-icon"
           viewBox="0 0 24 24"

@@ -30,10 +30,11 @@ function Fees() {
   };
 
   const handleClick = () => {
-    setShowForm(true);
-    setShowTable(false);
-    setEditingFee(null);
+    setShowForm(!showForm);
+    setShowTable(showForm); // Show the table when the form is closed
+    setEditingFee(null); // Reset editing state when toggling
   };
+  
 
   const handleEdit = (fee) => {
     setEditingFee(fee);
@@ -85,7 +86,22 @@ function Fees() {
     <div className="fee-container">
       <SideBar />
       {showTable && (
-        <button className="add-fee-button" onClick={handleClick}>+</button>
+        <button onClick={handleClick} className="add-button">
+        <svg
+          className="plus-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        <span className="sr-only">Add client</span>
+      </button>
       )}
 
       {showTable && (

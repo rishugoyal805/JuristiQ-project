@@ -37,6 +37,9 @@
   }
   
   @media (min-width: 640px) {
+    .content-container{
+        margin-top: 80px;
+    }
     .content-container {
       margin-left: 256px;
     }
@@ -90,12 +93,18 @@
   }
   
   @media (min-width: 768px) {
+    .content-container{
+        margin-top: 80px;
+    }
     .clients-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
   
   @media (min-width: 1024px) {
+    .content-container{
+        margin-top: 80px;
+    }
     .clients-grid {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -264,11 +273,11 @@
   }
   
   /* Add Client Button */
-  .add-client-button {
+  .add-button {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    background-color: #111827;
+    background-color: black;
     color: white;
     border: none;
     border-radius: 50%;
@@ -283,7 +292,7 @@
     z-index: 10;
   }
   
-  .add-client-button:hover {
+  .add-button:hover {
     background-color: #1f2937;
     transform: scale(1.05);
   }
@@ -428,9 +437,20 @@
   
   /* Responsive adjustments */
   @media (max-width: 640px) {
+    .content-container{
+        margin-top: 80px;
+    }
     .modal {
       width: 90%;
     }
   }
   
-  
+  @media (min-width: 541px) and (max-width: 949px) {
+    .content-container{
+        margin-top: 80px;
+    }
+    .modal {
+        width: 90%;
+      }
+      
+}

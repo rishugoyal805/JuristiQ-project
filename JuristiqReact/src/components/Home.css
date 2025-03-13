@@ -27,7 +27,7 @@
     width: 400px;
     border-radius: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); 
-    padding: 20px;
+    padding: 10px;
     background-color: black;
     color: white;
     overflow: hidden; /* Prevents content overflow */
@@ -39,6 +39,7 @@
     border-radius: 20px;
     background-color: white;
     color: black;
+    height: 280px;
 }
 
 /* Lower content adjustments */
