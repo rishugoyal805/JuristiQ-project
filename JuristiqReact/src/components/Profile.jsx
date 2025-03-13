@@ -16,18 +16,23 @@ function Profile() {
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    fetchProfile();
-    fetchCaseStatistics();
-  }, []);
+    const fetchData = async () => {
+      await fetchProfile();
+      await fetchCaseStatistics();
+    };
+    fetchData();
+  }, []);  
 
   const fetchProfile = async () => {
     try {
       const response = await axios.get("http://localhost:3000/profile", { withCredentials: true });
-      setAdvocate(response.data);
+      setAdvocate(prev => ({ ...prev, ...response.data }));
+      fetchCaseStatistics(); // Ensure this runs after setting profile
     } catch (error) {
       console.error("Error fetching profile:", error);
     }
   };
+    
 
   const fetchCaseStatistics = async () => {
     try {
@@ -35,11 +40,16 @@ function Profile() {
       const cases = response.data;
       const casesHandled = cases.length;
       const casesWon = cases.filter(c => c.status.toLowerCase() === "won").length;
-      setAdvocate(prev => ({ ...prev, casesHandled, casesWon }));
+      
+      setAdvocate(prev => ({ 
+        ...prev, 
+        casesHandled: casesHandled || prev.casesHandled, 
+        casesWon: casesWon || prev.casesWon 
+      }));
     } catch (error) {
       console.error("Error fetching case statistics:", error);
     }
-  };
+  };  
 
   const handleUpdate = async () => {
     try {
