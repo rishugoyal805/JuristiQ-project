@@ -4,7 +4,7 @@ import SideBar from "./sideBar"
 import { useState, useEffect } from "react"
 import axios from "axios"
 import "./sideBar.css"
-import "./my-cases.css"
+import "./Mycases.css"
 
 function MyCases() {
   const [showForm, setShowForm] = useState(false)

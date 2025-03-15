@@ -5,26 +5,3 @@
     font-weight: bold;
 }
 
-@media screen and (max-width: 950px) {
-    .calender {
-        width: 90%; /* Reduce width for smaller screens */
-        height: auto;
-        padding: 15px;
-    }
-    
-    .highlight {
-        font-size: 12px; /* Reduce font size for smaller screens */
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .calender {
-        width: 100%; /* Full width for mobile screens */
-        height: auto;
-        padding: 10px;
-    }
-
-    .highlight {
-        font-size: 10px; /* Further reduce font size */
-    }
-}

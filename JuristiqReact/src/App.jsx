@@ -10,10 +10,15 @@ import Fees from './components/Fees'
 import Clients from './components/Clients'
 import Profile from './components/Profile'
 import ForgetPassword from './components/ForgetPassword'
+import LandingPage from './components/landingpage'
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <LandingPage/>
+  },
+  {
+    path: "/login",
     element: <LoginPage/>
   },
   {

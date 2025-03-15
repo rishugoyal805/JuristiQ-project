@@ -15,14 +15,14 @@
 }
 
 /* Hide scrollbar for better design */
-.headlines::-webkit-scrollbar {
+/* .headlines::-webkit-scrollbar {
     width: 5px;
 }
 
 .headlines::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
-}
+} */
 
 /* Headlines title */
 .headlines h2 {
@@ -56,15 +56,28 @@
     text-align: left;
     white-space: nowrap; /* Prevent text wrapping */
     overflow: hidden;
-    text-overflow: ellipsis; /* Adds '...' if text is too long */
+    text-overflow: ellipsis; /*Adds '...' if text is too long */
     width: 100%;
 }
 
-/* Hover effect */
-.headlines a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+/* On hover, make the text float while element remains fixed */
+.headlines li:hover a {
+    animation: floatText 5s linear infinite alternate;
+    white-space: nowrap;
+    overflow: visible;
+    position: relative;
+    text-decoration: underline;
+    /* background-color: rgba(255, 255, 255, 0.2); */
 }
 
+@keyframes floatText {
+    from {
+        left: 0%;
+    }
+    to {
+        left: -100%;
+    }
+}
 @media screen and (max-width: 950px) {
     .headlines {
         width: 90%; /* Reduce width */

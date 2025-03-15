@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column; 
     margin-left: 330px; /* Adjusted to avoid sidebar overlap */
-    margin-right: 80px;
+    margin-right: 120px;
     margin-top: 30px;
     align-items: flex-end; 
     height: 100vh; 
@@ -15,6 +15,7 @@
     flex-direction: row;
     flex-wrap: wrap; /* Ensures responsiveness */
     gap: 50px;
+    
 }
 
 .calender, 
@@ -183,7 +184,7 @@
 }
 
 /* 860 - 1200px */
-@media screen and (min-width: 861px) and (max-width: 1200px) {
+@media screen and (min-width: 861px) and (max-width: 950px) {
     .main-content {
         margin-left: 330px; /* Account for sidebar */
         margin-right: 40px;
