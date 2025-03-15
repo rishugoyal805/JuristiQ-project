@@ -1,5 +1,3 @@
-"use client"
-
 import SideBar from "./sideBar"
 import { useState, useEffect } from "react"
 import axios from "axios"
