@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./LandingPage.css";
-
 
 function LandingPage() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [feedbackForm, showFeedbackForm] = useState(false);
+  const [feedbackData, setFeedbackData] = useState({ email: "", feedback: "" });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +21,27 @@ function LandingPage() {
   const handleGetStarted = () => navigate("/login");
   const handleSignUp = () => navigate("/signUp");
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFeedbackData({ ...feedbackData, [name]: value });
+  };
+
+  const handleFeedback=()=>{
+    showFeedbackForm(true);
+  }
+
+  const handleFeedbackSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:3000/feedback", feedbackData);
+      alert("Feedback submitted successfully");
+      setFeedbackData({ email: "", feedback: "" });
+      showFeedbackForm(false);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      alert("Failed to submit feedback");
+    }
+  };
   const handleButtonClick = (e) => {
     const button = e.currentTarget;
     button.classList.add("clicked");
@@ -44,16 +67,12 @@ function LandingPage() {
 
           <nav className="main-navigation">
             <a href="#features">Features</a>
-            <a href="#benefits">Feedback</a>
+            <a href="#feedback" onClick={handleFeedback}>Feedback</a>
           </nav>
 
           <div className="header-actions">
-            <button className="login-button" onClick={handleGetStarted}>
-              Log In
-            </button>
-            <button className="signup-button" onClick={handleSignUp}>
-              Sign Up
-            </button>
+            <button className="login-button" onClick={handleGetStarted}>Log In</button>
+            <button className="signup-button" onClick={handleSignUp}>Sign Up</button>
           </div>
         </div>
       </header>
@@ -68,7 +87,6 @@ function LandingPage() {
                 <button className="cta-button" onClick={(e) => { handleButtonClick(e); handleGetStarted(); }}>
                   Get Started <span className="arrow-icon">→</span>
                 </button>
-                
               </div>
             </div>
 
@@ -101,13 +119,7 @@ function LandingPage() {
           </div>
 
           <div className="features-grid">
-            {[
-              "Case Management",
-              "Fees Management",
-              "Client Portal",
-              "Calendar & Deadlines",
-              
-            ].map((feature, index) => (
+            {["Case Management", "Fees Management", "Client Portal", "Calendar & Deadlines"].map((feature, index) => (
               <div className="feature-card" key={index}>
                 <div className="feature-icon">
                   <div className="icon-placeholder"></div>
@@ -127,19 +139,54 @@ function LandingPage() {
               <h2>Ready to transform your legal practice?</h2>
               <p>Join thousands of legal professionals who trust JuristiQ for their case management needs.</p>
               <div className="cta-buttons">
-                <button className="cta-button white" onClick={(e) => { handleButtonClick(e); handleGetStarted(); }}>
-                  Get Started
-                </button>
-                
+                <button className="cta-button white" onClick={(e) => { handleButtonClick(e); handleGetStarted(); }}>Get Started</button>
               </div>
             </div>
-
             <div className="cta-image">
               <img src="dashboard.png" alt="JuristiQ dashboard preview" />
             </div>
           </div>
         </div>
       </section>
+
+      {feedbackForm && (
+        <section id="feedback" className="feedback-section">
+          <div className="feedback-container">
+            <div className="feedback-header">
+              <h2>Feedback</h2>
+              <p>Help us grow by sharing your feedback. Your opinion counts!</p>
+            </div>
+            <form className="feedback-form" onSubmit={handleFeedbackSubmit}>
+              <label>Email</label>
+              <input placeholder="Enter your email" type="email" value={feedbackData.email} name="email" onChange={handleInputChange} required />
+              <label>Your feedback</label>
+              <textarea placeholder="Enter your feedback" value={feedbackData.email} name="feedback" rows="6" onChange={handleInputChange} required />
+              <div className="button-container">
+                <button type="submit" className="submit-button">Send</button>
+                <button type="button" className="submit-button" onClick={() => showFeedbackForm(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      )}
+
+      <footer className="footer-section">
+        <div className="footer-container">
+          <div className="footer-brand">
+            <div className="footer-logo-container">
+            <div className="footer-logo"></div>
+            <h1 className="footer-title">JuristiQ</h1>
+            </div><br/>
+            <p className="footer-text">Effortless legal case management—secure, organized, and built for advocates.</p>
+          </div>
+          <p className="footer-copyright">© {new Date().getFullYear()} JuristiQ. All rights reserved.</p>
+          <div className="footer-links">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Facebook</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
