@@ -13,13 +13,18 @@ function Calender() {
 
         console.log("Fetched hearing dates:", response.data); // Debugging log
 
-        // Convert dates to YYYY-MM-DD format for accurate comparison
+        // const formattedDates = response.data.map(date => {
+        //   const localDate = new Date(date);
+        //   localDate.setHours(localDate.getHours() - localDate.getTimezoneOffset() / 60);
+        //   return localDate.toISOString().split("T")[0];
+        // });
+
+        //this works but test more
         const formattedDates = response.data.map(date => {
           const localDate = new Date(date);
-          localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+          localDate.setDate(localDate.getDate() - 1); // Subtract 1 day
           return localDate.toISOString().split("T")[0];
-        });
-        
+        });      
 
         console.log("Formatted hearing dates:", formattedDates); // Debugging log
 

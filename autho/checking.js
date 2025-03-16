@@ -1,16 +1,16 @@
 const express = require('express');
-const app= express();
+const app = express();
 const nodemailer = require('nodemailer');
 
-const bcrypt= require('bcrypt');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require("./models/user");
- const moment = require('moment');
- const twilio = require('twilio');
-const postModel= require("./models/post");
-const casesModel= require("./models/cases");
-const cookieParser= require('cookie-parser');
-const path=require('path');
+const moment = require('moment');
+const twilio = require('twilio');
+const postModel = require("./models/post");
+const casesModel = require("./models/cases");
+const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com", // Use your email provider's SMTP server
