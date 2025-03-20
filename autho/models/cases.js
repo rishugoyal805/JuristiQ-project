@@ -1,21 +1,23 @@
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://127.0.0.1:27017/miniproject");
 
-const casesSchema= mongoose.Schema({
-  caseTitle: String,
+const casesSchema = mongoose.Schema({
+    user: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "user", 
+        required: true // Ensures each case is associated with a user
+    },  
+    caseTitle: String, // caseTitle should not reference user, keeping it as a String
     clientName: String,
-    status: {
-      type: String,
-      enum: ['Closed', 'Active', 'Pending','won'] // Enum validation for status
-      // Optionally, you can make status a required field
-    },
+    status: { 
+        type: String, 
+        enum: ['Closed', 'Active', 'Pending', 'Won'] 
+    }, 
     nextHearing: Date,
     case_ref_no: Number,
     fees: Number,
     pending_fees: Number,
-    posts: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "post"}
-    ]
+  
 });
-module.exports= mongoose.model('cases', casesSchema);
+
+module.exports = mongoose.model('cases', casesSchema);
