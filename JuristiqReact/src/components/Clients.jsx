@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -17,7 +18,8 @@ function Clients() {
   const fetchClients = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.get("http://localhost:3000/clients")
+      const response = await axios.get("http://localhost:3000/clients", {
+        withCredentials: true})
       console.log("Fetched Clients:", response.data)
       setClients(response.data)
     } catch (error) {
@@ -37,7 +39,8 @@ function Clients() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/createclient", newClient)
+      const response = await axios.post("http://localhost:3000/createclient", newClient, {
+        withCredentials: true})
       console.log("New Client Added:", response.data)
 
       // Update state to reflect the new client
@@ -235,6 +238,10 @@ function Clients() {
 }
 
 export default Clients
+
+
+
+
 
 
 
