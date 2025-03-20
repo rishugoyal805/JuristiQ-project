@@ -260,7 +260,7 @@ app.post("/advocate", async (req, res) => {
       secure: false, // true for SSL
       auth: {
         user: "devyani04sh@gmail.com", // Sender email
-        pass: "fbgt bbyv bote ldri", // App password (not your email password)
+        pass: "bafg uosg gjze erua", // App password (not your email password)
       },
     });
 
