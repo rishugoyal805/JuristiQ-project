@@ -15,19 +15,18 @@ function MyCases() {
 
   const fetchCases = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getcases")
-
-      // Ensure `nextHearing` is properly parsed as Date objects
-      const formattedCases = response.data.map((caseItem) => ({
-        ...caseItem,
-        nextHearing: caseItem.nextHearing ? new Date(caseItem.nextHearing) : null,
-      }))
-
-      setCases(formattedCases)
+      const response = await axios.get("http://localhost:3000/getcases", {
+        withCredentials: true, // Ensures cookies are sent
+      });
+  
+      console.log("Response Data:", response.data); // Debugging
+  
+      setCases(response.data);
     } catch (error) {
-      console.error("Error fetching cases:", error)
+      console.error("Error fetching cases:", error.response?.data || error);
     }
-  }
+  };
+  
 
   const handleClick = () => {
     setShowForm(!showForm)
@@ -60,7 +59,7 @@ function MyCases() {
         await axios.put(`http://localhost:3000/updatecase/${editingCase.case_ref_no}`, newCase)
       } else {
         // Add New Case (POST request)
-        await axios.post("http://localhost:3000/createcase", newCase)
+        await axios.post("http://localhost:3000/createcase", newCase ,{withCredentials: true})
       }
 
       // Reset the form and fetch updated data
@@ -136,7 +135,7 @@ function MyCases() {
                 <option value="Pending">Pending</option>
                 <option value="Active">Active</option>
                 <option value="Closed">Closed</option>
-                <option value="won">Won</option>
+                <option value="Won">Won</option>
               </select>
 
               <label>Next hearing:</label>
@@ -205,6 +204,21 @@ function MyCases() {
 }
 
 export default MyCases
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
