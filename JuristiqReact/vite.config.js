@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    allowedHosts: ['positive-liberal-treefrog.ngrok-free.app','personally-allowing-lacewing.ngrok-free.app','one-famous-sculpin.ngrok-free.app'],
+  },
 })
