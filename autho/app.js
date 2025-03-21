@@ -1,35 +1,35 @@
 const express = require('express');
-const app= express();
+const app = express();
 const nodemailer = require('nodemailer');
-const bcrypt= require('bcrypt');
+const bcrypt = require('bcrypt');
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const jwt = require('jsonwebtoken');
 const userModel = require("./models/user");
-const clientModel= require("./models/client");
+const clientModel = require("./models/client");
 const FeesModel = require("./models/fees");
 
- const moment = require('moment');
- const twilio = require('twilio');
-  const cors = require("cors");
-  app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-  // Update with your frontend URL
+const moment = require('moment');
+const twilio = require('twilio');
+const cors = require("cors");
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// Update with your frontend URL
 
-const postModel= require("./models/post");
-const casesModel= require("./models/cases");
-const cookieParser= require('cookie-parser');
-const path=require('path');
+const postModel = require("./models/post");
+const casesModel = require("./models/cases");
+const cookieParser = require('cookie-parser');
+const path = require('path');
 app.set("view engine", "ejs");
 app.use(express.json({ limit: "50mb" })); // Adjust size as needed
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
-app.get('/',(req,res)=>{
-   res.render("index");
+app.get('/', (req, res) => {
+  res.render("index");
 });
-app.get('/login',(req,res)=>{
-    res.render("login");
+app.get('/login', (req, res) => {
+  res.render("login");
 })
 
 const isLoggedIn = (req, res, next) => {
@@ -73,7 +73,7 @@ app.post("/login", async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
-console.log("generated token",token);
+    console.log("generated token", token);
     // Set token in HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true, // Prevents JavaScript access
@@ -110,25 +110,25 @@ app.get("/getcases", isLoggedIn, async (req, res) => {
 
 
 
- app.post('/register', async (req,res)=>{
-    let { name, age, email,password,secretString}= req.body;//so that you dont have to write req.body with variables again and again
+app.post('/register', async (req, res) => {
+  let { name, age, email, password, secretString } = req.body;//so that you dont have to write req.body with variables again and again
 
-    let user = await userModel.deleteOne({email});
-    // if(user) return res.status(500).send("user already registered");
-    bcrypt.genSalt(10, (err,salt)=>{
-        bcrypt.hash(password, salt, async (err, hash)=>{
-          let user = await userModel.create({
-               name,
-               age,
-                email,
-                password: hash,
-                secretString
-            });
-          let token=  jwt.sign({email: email, userid: user._id},process.env.JWT_SECRET);
-          res.cookie("token", token);
-          res.send("registered");
-        })
+  let user = await userModel.deleteOne({ email });
+  // if(user) return res.status(500).send("user already registered");
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, async (err, hash) => {
+      let user = await userModel.create({
+        name,
+        age,
+        email,
+        password: hash,
+        secretString
+      });
+      let token = jwt.sign({ email: email, userid: user._id }, process.env.JWT_SECRET);
+      res.cookie("token", token);
+      res.send("registered");
     })
+  })
 });
 //  app.post('/post',isLoggedIn, async(req,res)=>{
 //       let user= await userModel.findOne({email: req.user.email});
@@ -142,29 +142,29 @@ app.get("/getcases", isLoggedIn, async (req, res) => {
 //       await user.save();
 //       res.redirect("/profile");
 //  });
- app.get('/improvising',async(req,res)=>{
-    await userModel.deleteOne({username: "dev"});
-    res.redirect("/");
- });
- app.get('/toknow',async(req,res)=>{
- let contents= await userModel.find();
- res.send(contents);
- });
- app.get('/toknowcl',async(req,res)=>{
-  let contents= await clientModel.find();
-  res.send(contents);
-  });
- app.get('/toknowc',async(req,res)=>{
-  let contents= await casesModel.find();
-  res.send(contents);
-  });
-app.get('/logout',(req,res)=>{
-    res.cookie("token", "");
-    //making the cookie blank
-    res.redirect("/");
+app.get('/improvising', async (req, res) => {
+  await userModel.deleteOne({ username: "dev" });
+  res.redirect("/");
 });
- 
- //protected middleware
+app.get('/toknow', async (req, res) => {
+  let contents = await userModel.find();
+  res.send(contents);
+});
+app.get('/toknowcl', async (req, res) => {
+  let contents = await clientModel.find();
+  res.send(contents);
+});
+app.get('/toknowc', async (req, res) => {
+  let contents = await casesModel.find();
+  res.send(contents);
+});
+app.get('/logout', (req, res) => {
+  res.cookie("token", "");
+  //making the cookie blank
+  res.redirect("/");
+});
+
+//protected middleware
 //  function isLoggedIn(req,res, next){
 // if(req.cookies.token ==="") res.redirect("/login");
 // else{
@@ -173,11 +173,11 @@ app.get('/logout',(req,res)=>{
 //  next();
 // }
 //  }
- app.get('/read',async(req,res)=>{
-  const user= await userModel.findOne({username:"xyz"});
+app.get('/read', async (req, res) => {
+  const user = await userModel.findOne({ username: "xyz" });
   res.send(user);
- })
- //protected routes work only when logged in
+})
+//protected routes work only when logged in
 // Middleware to check if user is logged in
 // GET Profile Data
 app.get("/profile", isLoggedIn, async (req, res) => {
@@ -223,26 +223,26 @@ app.put("/updateProfile", isLoggedIn, async (req, res) => {
 });
 
 
-app.get("/like/:id", isLoggedIn, async(req,res)=>{
-  let post= await postModel.findOne({_id: req.params.id}).populate("user");
-  if(post.likes.indexOf(req.user.userid)=== -1){
+app.get("/like/:id", isLoggedIn, async (req, res) => {
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  if (post.likes.indexOf(req.user.userid) === -1) {
     post.likes.push(req.user.userid);
   }
-  else{
-    post.likes.splice( post.likes.indexOf(req.user.userid), 1);
-  }ƒ
-  
+  else {
+    post.likes.splice(post.likes.indexOf(req.user.userid), 1);
+  } ƒ
+
   await post.save();
   res.redirect("/profile");
 });
-app.get("/edit/:id", isLoggedIn, async(req,res)=>{
-  let post =await postModel.findOne({_id: req.params.id}).populate("user");    
-  res.render("edit", {post});
+app.get("/edit/:id", isLoggedIn, async (req, res) => {
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  res.render("edit", { post });
 });
-app.post("/update/:id", isLoggedIn, async(req,res)=>{
-  let post =await postModel.findOneAndUpdate({_id: req.params.id}, {content: req.body.content})
+app.post("/update/:id", isLoggedIn, async (req, res) => {
+  let post = await postModel.findOneAndUpdate({ _id: req.params.id }, { content: req.body.content })
 
-  res.redirect("/profile",otp);
+  res.redirect("/profile", otp);
 });
 
 // POST endpoint to create user and send OTP
@@ -318,40 +318,40 @@ app.post("/verifyotp", async (req, res) => {
       res.status(200).send("OTP verified successfully");
     } else {
       console.log("Incorrect OTP");
-      await userModel.deleteOne({email });
+      await userModel.deleteOne({ email });
     }
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Error verifying OTP");
   }
 });
-app.get("/casesinfo",isLoggedIn,async(req,res)=>{
-  let info= await casesModel.find();
+app.get("/casesinfo", isLoggedIn, async (req, res) => {
+  let info = await casesModel.find();
   res.send(info);
 });
-app.post("/createcase",isLoggedIn, async (req, res) => {
-  let user= await userModel.findOne({email:req.user.email});
+app.post("/createcase", isLoggedIn, async (req, res) => {
+  let user = await userModel.findOne({ email: req.user.email });
   try {
-      const { case_ref_no, caseTitle, clientName, status, nextHearing, fees, pending_fees } = req.body;
+    const { case_ref_no, caseTitle, clientName, status, nextHearing, fees, pending_fees } = req.body;
 
-      // Create a new case
-      const newCase = await casesModel.create({
-        user: user._id,
-          case_ref_no,
-          caseTitle,
-          clientName,
-          status,
-          nextHearing: nextHearing, // Match field name in schema
-          fees,
-          pending_fees,
-      });
-      user.cases.push(newCase._id);
+    // Create a new case
+    const newCase = await casesModel.create({
+      user: user._id,
+      case_ref_no,
+      caseTitle,
+      clientName,
+      status,
+      nextHearing: nextHearing, // Match field name in schema
+      fees,
+      pending_fees,
+    });
+    user.cases.push(newCase._id);
 
-await user.save();
-      res.status(201).json({ success: true, message: "Case created successfully", case: newCase });
+    await user.save();
+    res.status(201).json({ success: true, message: "Case created successfully", case: newCase });
   } catch (error) {
-      console.error("Error creating case:", error);
-      res.status(500).json({ success: false, message: "Internal server error" });
+    console.error("Error creating case:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 app.put("/updatecase/:case_ref_no", async (req, res) => {
@@ -454,15 +454,15 @@ app.post("/createclient", isLoggedIn, async (req, res) => {
 });
 
 
-app.delete("/deletecases/:caseTitle", async(req,res)=>{
+app.delete("/deletecases/:caseTitle", async (req, res) => {
   const { caseT } = req.params;
-  let result = await casesModel.deleteOne({caseT});
-if(result){
-  res.send("deleted");
-}
-else{
-  res.send("eroor");
-}
+  let result = await casesModel.deleteOne({ caseT });
+  if (result) {
+    res.send("deleted");
+  }
+  else {
+    res.send("eroor");
+  }
 });
 app.delete("/deletecase/:case_ref_no", async (req, res) => {
   const { case_ref_no } = req.params;
@@ -486,7 +486,7 @@ app.delete("/deletecase/:case_ref_no", async (req, res) => {
 });
 app.delete("/deleteadv/:email", async (req, res) => {
   const { email } = req.params;  // ✅ Correctly extract "email"
-  
+
   try {
     const deletedUser = await userModel.deleteOne({ email }); // ✅ Use email to find and delete user
 
@@ -494,7 +494,7 @@ app.delete("/deleteadv/:email", async (req, res) => {
       return res.status(404).send("User not found");  // ✅ Handle case where user isn't found
     }
 
-    res.send("User deleted successfully"); 
+    res.send("User deleted successfully");
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).send("Error deleting user");
@@ -520,7 +520,7 @@ app.get("/hearings", isLoggedIn, async (req, res) => {
 app.get("/pendingcases", isLoggedIn, async (req, res) => {
   try {
     const pendingCases = await casesModel.find(
-      { user: req.user.id, status: "Pending" }, 
+      { user: req.user.id, status: "Pending" },
       "caseTitle clientName nextHearing"
     );
 
@@ -563,7 +563,7 @@ app.post("/createfee", isLoggedIn, async (req, res) => {
       remarks,
     });
 
- 
+
     user.fees.push(newFee._id);
     await user.save();
     res.status(201).json({ success: true, message: "Fee record created successfully!", fee: newFee });
@@ -638,140 +638,3 @@ app.delete("/deletefee/:id", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
