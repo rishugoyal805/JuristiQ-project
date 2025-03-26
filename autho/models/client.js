@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/miniproject");
+// mongoose.connect("mongodb+srv://swayamsam2005:sLDNreRmb5R0KjQH@cluster0.ipxl289.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+require("../db"); // Import the connection file
 const clientSchema= mongoose.Schema({
   client_name: {
     type: String,
