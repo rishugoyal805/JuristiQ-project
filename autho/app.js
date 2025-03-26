@@ -6,14 +6,18 @@ connectDB();
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const bodyParser = require("body-parser");
+require("dotenv").config();
 const jwt = require('jsonwebtoken');
 const userModel = require("./models/user");
 const clientModel = require("./models/client");
 const FeesModel = require("./models/fees");
+
 const moment = require('moment');
 const twilio = require('twilio');
 const cors = require("cors");
-app.use(cors({ origin: "http://localhost:5173", credentials: true })); // Update with your frontend URL
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// Update with your frontend URL
+
 const postModel = require("./models/post");
 const casesModel = require("./models/cases");
 const cookieParser = require('cookie-parser');
@@ -31,6 +35,28 @@ app.get('/login', (req, res) => {
   res.render("login");
 })
 
+const isLoggedIn = (req, res, next) => {
+  console.log("Checking authentication...");
+  console.log("Cookies:", req.cookies); // Debugging
+  console.log("Headers:", req.headers); // Debugging
+
+  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    console.log("❌ No token provided");
+    return res.status(401).json({ error: "Unauthorized: No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    console.log("✅ Decoded User:", req.user); // Debugging
+    next();
+  } catch (error) {
+    console.log("❌ Token verification failed:", error);
+    return res.status(403).json({ error: "Forbidden: Invalid token" });
+  }
+};
 
 app.post("/login", async (req, res) => {
   try {
@@ -49,8 +75,8 @@ app.post("/login", async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user._id, email: user.email }, "secretString", { expiresIn: "1h" });
-
+    const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    console.log("generated token", token);
     // Set token in HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true, // Prevents JavaScript access
@@ -65,23 +91,26 @@ app.post("/login", async (req, res) => {
     res.sendStatus(500); // Internal server error
   }
 });
+app.get("/getcases", isLoggedIn, async (req, res) => {
+  console.log("req.user:", req.user); // Debugging
+  if (!req.user) {
+    return res.status(401).json({ error: "Unauthorized: No user found in request" });
+  }
 
-app.get("/getcases", async (req, res) => {
   try {
-    const cases = await casesModel.find();
+    const user = await userModel.findOne({ email: req.user.email }).populate("cases");
 
-    // Transform cases to match frontend expectations
-    const formattedCases = cases.map(c => ({
-      ...c.toObject(),  // Convert Mongoose document to plain object
-      nextHearing: c.nextHearing  // Ensure field matches frontend key
-    }));
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-    res.status(200).json(formattedCases);
+    res.status(200).json(user.cases);
   } catch (error) {
     console.error("Error fetching cases:", error);
     res.sendStatus(500);
   }
 });
+
 
 
 app.post('/register', async (req, res) => {
@@ -98,24 +127,24 @@ app.post('/register', async (req, res) => {
         password: hash,
         secretString
       });
-      let token = jwt.sign({ email: email, userid: user._id }, "secretString");
+      let token = jwt.sign({ email: email, userid: user._id }, process.env.JWT_SECRET);
       res.cookie("token", token);
       res.send("registered");
     })
   })
 });
-app.post('/post', isLoggedIn, async (req, res) => {
-  let user = await userModel.findOne({ email: req.user.email });
-  let { content } = req.body;
+//  app.post('/post',isLoggedIn, async(req,res)=>{
+//       let user= await userModel.findOne({email: req.user.email});
+//       let {content} = req.body;
 
-  let post = await postModel.create({
-    user: user._id,
-    content
-  });
-  user.posts.push(post._id);
-  await user.save();
-  res.redirect("/profile");
-});
+//       let post= await postModel.create({
+//         user: user._id,
+//         content
+//       });
+//       user.posts.push(post._id);
+//       await user.save();
+//       res.redirect("/profile");
+//  });
 app.get('/improvising', async (req, res) => {
   await userModel.deleteOne({ username: "dev" });
   res.redirect("/");
@@ -153,24 +182,6 @@ app.get('/read', async (req, res) => {
 })
 //protected routes work only when logged in
 // Middleware to check if user is logged in
-function isLoggedIn(req, res, next) {
-  console.log("Cookies:", req.cookies);
-  if (!req.cookies.token) {
-    console.log("Token missing");
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
-  try {
-    let data = jwt.verify(req.cookies.token, "secretString");
-    console.log("Token verified:", data);
-    req.user = data;
-    next();
-  } catch (error) {
-    console.log("JWT Error:", error.message);
-    return res.status(401).json({ message: "Invalid token" });
-  }
-}
-
 // GET Profile Data
 app.get("/profile", isLoggedIn, async (req, res) => {
   try {
@@ -263,7 +274,7 @@ app.post("/advocate", async (req, res) => {
       secure: false, // true for SSL
       auth: {
         user: "devyani04sh@gmail.com", // Sender email
-        pass: "fbgt bbyv bote ldri", // App password (not your email password)
+        pass: "bafg uosg gjze erua", // App password (not your email password)
       },
     });
 
@@ -321,12 +332,14 @@ app.get("/casesinfo", isLoggedIn, async (req, res) => {
   let info = await casesModel.find();
   res.send(info);
 });
-app.post("/createcase", async (req, res) => {
+app.post("/createcase", isLoggedIn, async (req, res) => {
+  let user = await userModel.findOne({ email: req.user.email });
   try {
     const { case_ref_no, caseTitle, clientName, status, nextHearing, fees, pending_fees } = req.body;
 
     // Create a new case
     const newCase = await casesModel.create({
+      user: user._id,
       case_ref_no,
       caseTitle,
       clientName,
@@ -335,7 +348,9 @@ app.post("/createcase", async (req, res) => {
       fees,
       pending_fees,
     });
+    user.cases.push(newCase._id);
 
+    await user.save();
     res.status(201).json({ success: true, message: "Case created successfully", case: newCase });
   } catch (error) {
     console.error("Error creating case:", error);
@@ -386,33 +401,58 @@ app.get("/clients/:case_ref_no", async (req, res) => {
 });
 
 // Get all clients
-app.get("/clients", async (req, res) => {
+app.get("/clients", isLoggedIn, async (req, res) => {
+  console.log("req.user:", req.user); // Debugging
+
+  if (!req.user) {
+    return res.status(401).json({ error: "Unauthorized: No user found in request" });
+  }
+
   try {
-    const clients = await clientModel.find();
-    res.json(clients);
+    const user = await userModel.findOne({ email: req.user.email }).populate("client");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user.client);
   } catch (error) {
     console.error("Error fetching clients:", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+
 // Create a new client
-app.post("/createclient", async (req, res) => {
+app.post("/createclient", isLoggedIn, async (req, res) => {
   try {
     const { client_name, phone, case_ref_no } = req.body;
 
-    const existingClient = await clientModel.findOne({ case_ref_no });
-    if (existingClient) {
-      return res.status(400).json({ message: "Case reference number already exists" });
+    // Find the logged-in user
+    const user = await userModel.findOne({ email: req.user.email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const newClient = new clientModel({ client_name, phone, case_ref_no });
+    // Check if the client with the same case_ref_no already exists for this user
+    const existingClient = await clientModel.findOne({ case_ref_no, user: user._id });
+    if (existingClient) {
+      return res.status(400).json({ message: "Case reference number already exists for this user" });
+    }
+
+    // Create a new client associated with the logged-in user
+    const newClient = new clientModel({ client_name, phone, case_ref_no, user: user._id });
     await newClient.save();
 
-    res.status(201).json(newClient); // Send back the created client
+    // Link the client to the user
+    user.client.push(newClient._id);
+    await user.save();
+
+    res.status(201).json({ success: true, message: "Client created successfully", client: newClient });
   } catch (error) {
     console.error("Error creating client:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
@@ -464,17 +504,29 @@ app.delete("/deleteadv/:email", async (req, res) => {
   }
 });
 
-app.get("/hearings", async (req, res) => {
+app.get("/hearings", isLoggedIn, async (req, res) => {
   try {
-    const cases = await casesModel.find({}, "nextHearing"); // Fetch only hearingDate
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: "Unauthorized: User not found" });
+    }
+
+    // Fetch hearings only for the logged-in user
+    const cases = await casesModel.find({ user: req.user.id }, "nextHearing");
+
     res.json(cases.map((c) => c.nextHearing)); // Convert to JSON array
   } catch (error) {
+    console.error("Error fetching hearing dates:", error);
     res.status(500).json({ error: "Failed to fetch hearing dates" });
   }
 });
-app.get("/pendingcases", async (req, res) => {
+
+app.get("/pendingcases", isLoggedIn, async (req, res) => {
   try {
-    const pendingCases = await casesModel.find({ status: "Pending" }, "caseTitle clientName nextHearing");
+    const pendingCases = await casesModel.find(
+      { user: req.user.id, status: "Pending" },
+      "caseTitle clientName nextHearing"
+    );
+
     res.json(pendingCases);
   } catch (error) {
     console.error("Error fetching pending cases:", error);
@@ -483,26 +535,63 @@ app.get("/pendingcases", async (req, res) => {
 });
 
 
+
 // ✅ Create Fee Record
-app.post("/createfee", async (req, res) => {
+// ✅ Create a Fee Record (Authenticated & Linked to User)
+app.post("/createfee", isLoggedIn, async (req, res) => {
   try {
-    const newFee = new FeesModel(req.body);
-    await newFee.save();
-    res.status(201).json({ message: "Fee record created successfully!" });
+    const user = await userModel.findOne({ email: req.user.email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Extract all required fields from req.body
+    const { case_ref_no, clientName, fees, amount_paid, pending_fees, payment_mode, due_date, remarks } = req.body;
+
+    // Check if all required fields are present
+    if (!case_ref_no || !clientName || !fees || !amount_paid || !pending_fees || !payment_mode || !due_date) {
+      return res.status(400).json({ success: false, message: "All fields are required." });
+    }
+
+    const newFee = new FeesModel({
+      user: user._id,
+      case_ref_no,
+      clientName,
+      fees,
+      amount_paid,
+      pending_fees,
+      payment_mode,
+      due_date: new Date(due_date),
+      remarks,
+    });
+
+
+    user.fees.push(newFee._id);
+    await user.save();
+    res.status(201).json({ success: true, message: "Fee record created successfully!", fee: newFee });
   } catch (error) {
     console.error("Error creating fee record:", error);
-    res.status(500).json({ message: "Failed to create fee record" });
+    res.status(500).json({ success: false, message: "Failed to create fee record" });
   }
 });
 
-// ✅ Get All Fees
-app.get("/getfees", async (req, res) => {
+
+// ✅ Get Fees for Logged-in User
+app.get("/getfees", isLoggedIn, async (req, res) => {
   try {
-    const fees = await FeesModel.find();
-    res.json(fees);
+    console.log("Fetching fees for user:", req.user.email);
+
+    const user = await userModel.findOne({ email: req.user.email }).populate("fees");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user.fees);
   } catch (error) {
     console.error("Error fetching fees:", error);
-    res.status(500).json({ message: "Failed to retrieve fees" });
+    res.status(500).json({ success: false, message: "Failed to retrieve fees" });
   }
 });
 
@@ -552,182 +641,3 @@ app.delete("/deletefee/:id", async (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

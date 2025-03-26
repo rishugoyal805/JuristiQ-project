@@ -23,20 +23,22 @@ function Profile() {
     }
     fetchData()
   }, [])
-
   const fetchProfile = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/profile", { withCredentials: true })
-      setAdvocate((prev) => ({ ...prev, ...response.data }))
-      fetchCaseStatistics() // Ensure this runs after setting profile
+      const response = await axios.get("http://localhost:3000/profile", { 
+        withCredentials: true 
+      });
+  
+      console.log("Profile Data from Backend:", response.data); // ✅ Log fetched data
+      setAdvocate((prev) => ({ ...prev, ...response.data }));
     } catch (error) {
-      console.error("Error fetching profile:", error)
+      console.error("Error fetching profile:", error.response?.data || error.message);
     }
-  }
-
+  };
+  
   const fetchCaseStatistics = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getcases")
+      const response = await axios.get("http://localhost:3000/getcases",{withCredentials:true})
       const cases = response.data
       const casesHandled = cases.length
       const casesWon = cases.filter((c) => c.status.toLowerCase() === "won").length

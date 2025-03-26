@@ -3,7 +3,13 @@ const mongoose = require('mongoose');
 
 // mongoose.connect("mongodb+srv://swayamsam2005:sLDNreRmb5R0KjQH@cluster0.ipxl289.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 require("../db"); // Import the connection file
+
 const clientSchema= mongoose.Schema({
+     user: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: "user", 
+            required: true // Ensures each case is associated with a user
+        },  
   client_name: {
     type: String,
     required: true, // Ensures the client name is mandatory

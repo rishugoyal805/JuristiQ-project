@@ -14,7 +14,9 @@ const userSchema = mongoose.Schema({
   profilePic: String, // Add profilePic field
   otp: Number,
   secretString: String,
-  posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }]
+  cases: [{type: mongoose.Schema.Types.ObjectId, ref: "cases"}],
+  client: [{type: mongoose.Schema.Types.ObjectId, ref: "client"}],
+  fees: [{type: mongoose.Schema.Types.ObjectId, ref: "fees"}],
 });
 
 module.exports = mongoose.model("user", userSchema);

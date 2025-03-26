@@ -15,7 +15,7 @@ function Fees() {
 
   const fetchFees = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getfees");
+      const response = await axios.get("http://localhost:3000/getfees",{withCredentials: true});
       setFees(response.data);
     } catch (error) {
       console.error("Error fetching fees:", error);
@@ -56,7 +56,7 @@ function Fees() {
       if (editingFee) {
         await axios.put(`http://localhost:3000/updatefee/${editingFee._id}`, feeData);
       } else {
-        await axios.post("http://localhost:3000/createfee", feeData);
+        await axios.post("http://localhost:3000/createfee", feeData,{withCredentials: true});
       }
       setShowForm(false);
       fetchFees();
@@ -168,3 +168,4 @@ function Fees() {
 }
 
 export default Fees;
+
