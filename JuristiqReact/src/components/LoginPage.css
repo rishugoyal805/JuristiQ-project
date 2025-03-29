@@ -84,25 +84,14 @@
   z-index: 2;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 48px;
-}
 
-.logo-icon {
-  width: 40px;
+.logo-icon img {
+  width: 100px;
   height: 40px;
-  background-color: #000;
-  border-radius: 50%;
+  border-radius: 5px;
+  object-fit:cover;
 }
 
-.logo-container h1 {
-  font-size: 28px;
-  color: #000;
-  margin: 0;
-}
 
 .welcome-message {
   max-width: 500px;

@@ -79,17 +79,12 @@
     justify-content: space-between;
   }
   
-  .logo-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  .logo-icon {
-    width: 40px;
+ 
+  .logo-icon img {
+    width: 100px;
     height: 40px;
-    background-color: #000;
-    border-radius: 50%;
+    border-radius: 5px;
+    object-fit:cover;
   }
   
   .logo-icon.white {
@@ -534,11 +529,12 @@
   gap: 12px;
 }
 
-.footer-logo {
-  width: 30px;
-  height: 30px;
-  background-color: #fff;
-  border-radius: 50%;
+.footer-logo img {
+  width: 100px;
+  height: 40px;
+  background-color: #000;
+  border-radius: 5px;
+  object-fit:cover;
 }
 
 .footer-title {

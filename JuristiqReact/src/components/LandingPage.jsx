@@ -60,10 +60,9 @@ function LandingPage() {
 
       <header className={`site-header ${isScrolled ? "scrolled" : ""}`}>
         <div className="header-container">
-          <div className="logo-container">
-            <div className="logo-icon"></div>
-            <h1>JuristiQ</h1>
-          </div>
+         
+            <div className="logo-icon"><img src="juristiq_icon.jpg" /></div>  
+          
 
           <nav className="main-navigation">
             <a href="#features">Features</a>
@@ -174,8 +173,8 @@ function LandingPage() {
         <div className="footer-container">
           <div className="footer-brand">
             <div className="footer-logo-container">
-            <div className="footer-logo"></div>
-            <h1 className="footer-title">JuristiQ</h1>
+            <div className="footer-logo"><img src="juristiq_icon.jpg"/></div>
+            
             </div><br/>
             <p className="footer-text">Effortless legal case management—secure, organized, and built for advocates.</p>
           </div>

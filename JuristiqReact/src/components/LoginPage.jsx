@@ -65,10 +65,9 @@ function LoginPage() {
         {/* Left side - Brand/Image */}
         <div className="login-branding">
           <div className="branding-content">
-            <div className="logo-container">
-              <div className="logo-icon"></div>
-              <h1>JuristiQ</h1>
-            </div>
+            
+            <div className="logo-icon"><img src="juristiq_icon.jpg"/></div>
+             
 
             <div className="welcome-message">
               <h2>Welcome to JuristiQ</h2>
