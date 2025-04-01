@@ -24,12 +24,11 @@ body {
     overflow-y: auto;
 }
 
-.logo {
-    font-size: 32px; 
-    color: #fff; 
-    font-weight: bold; 
-    margin-bottom: 20px; 
-    text-align: center;
+.logo img{
+    width: 190px;
+    height: 70px;
+    border-radius: 5px;
+    object-fit:cover;
 }
 
 
@@ -121,10 +120,9 @@ hr {
         width: auto;
     }
     
-    .logo {
-        font-size: 10px;
-        padding: 5px;
-        margin-top: 15px;
+    .logo img{
+        width: 50px;
+        height: 30px;
     }
     
     hr {

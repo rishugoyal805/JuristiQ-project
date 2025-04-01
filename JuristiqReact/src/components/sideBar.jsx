@@ -32,7 +32,7 @@ function SideBar() {
   return (
     
     <div className="sideBar">
-        <div className="logo">JuristiQ</div>
+        <div className="logo"><img src="juristiq_icon.jpg" /></div>
         
         <div className="options">
                 <button onClick={handleHome }>Home</button>
