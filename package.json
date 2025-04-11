@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "bcryptjs": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "mongoose": "^8.12.1",
     "react-calendar": "^5.1.0"
   }
