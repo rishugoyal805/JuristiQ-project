@@ -1,15 +1,17 @@
-const mongoose = require("mongoose");
-
-const MONGO_URI = "mongodb+srv://swayamsam2005:sLDNreRmb5R0KjQH@cluster0.ipxl289.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const connectDB = async () => {
-    try {
-        await mongoose.connect(MONGO_URI);
-        console.log("✅ MongoDB Connected...");
-    } catch (error) {
-        console.error("❌ MongoDB Connection Error:", error);
-        process.exit(1); // Exit process on failure
-    }
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ MongoDB connected via Mongoose!");
+  } catch (error) {
+    console.error("❌ Error connecting to MongoDB:", error);
+  }
 };
 
 module.exports = connectDB;
+
