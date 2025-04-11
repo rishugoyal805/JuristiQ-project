@@ -4,7 +4,7 @@ const connectDB = require("./db"); // Import connection function
 // Connect to MongoDB
 connectDB();
 const nodemailer = require('nodemailer');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const jwt = require('jsonwebtoken');
