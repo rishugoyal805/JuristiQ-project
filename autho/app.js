@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+
 const connectDB = require("./db"); // Import connection function
 // Connect to MongoDB
 connectDB();
