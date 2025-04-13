@@ -1,210 +1,157 @@
+/* Main layout structure */
 .main-content {
     display: flex;
-    flex-direction: column; 
-    margin-left: 330px; /* Adjusted to avoid sidebar overlap */
-    margin-right: 120px;
-    margin-top: 30px;
-    align-items: flex-end; 
-    height: 100vh; 
-    justify-content: space-evenly; 
-    gap: 50px; 
-}
-
-.upper-content {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap; /* Ensures responsiveness */
-    gap: 50px;
-    
-}
-
-.calender, 
-.headlines {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    height: 300px;
-    width: 400px;
-    border-radius: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); 
-    padding: 10px;
-    background-color: black;
-    color: white;
-    overflow: hidden; /* Prevents content overflow */
-}
-
-/* Calendar adjustments */
-.calender .react-calendar {
+    margin-left: 330px; /* Space for sidebar */
+    padding: 30px;
+    min-height: 100vh;
+    gap: 40px;
+    max-width: 1200px;
+  }
+  
+  .upper-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
     width: 100%;
-    border-radius: 20px;
-    background-color: white;
-    color: black;
-    height: 280px;
-}
-
-/* Lower content adjustments */
-.lower-content {
-    display: flex;
-    align-items: left;
-    flex-direction: column;
-    height: 200px;
-    margin-bottom: 30px;
-    width: 95%;
-    border-radius: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); 
+  }
+  
+  /* Card styling for all components */
+  .calendar-container,
+  .headlines-container,
+  .pending-tasks-container {
+    background: #1a1a1a;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    background-color: black;
     color: white;
-}
-
-/* 0 - 270px */
-@media screen and (max-width: 270px) {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .calendar-container:hover,
+  .headlines-container:hover,
+  .pending-tasks-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Upper content components */
+  .calendar-container,
+  .headlines-container {
+    flex: 1;
+    min-width: 300px;
+    height: 350px;
+  }
+  
+  /* Calendar specific styles */
+  .calendar-container .react-calendar {
+    width: 100%;
+    height: 310px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-family: "Inter", sans-serif;
+  }
+  
+  .calendar-container .react-calendar button {
+    color: white;
+    border-radius: 8px;
+  }
+  
+  .calendar-container .react-calendar button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .calendar-container .react-calendar__tile--active {
+    background-color: #3a86ff;
+  }
+  
+  .calendar-container .react-calendar__month-view__days__day--weekend {
+    color: #ff9f1c;
+  }
+  
+  /* Lower content */
+  .pending-tasks-container {
+    width: 100%;
+    min-height: 250px;
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 1200px) {
     .main-content {
-        margin-left: 100px; /* Add left margin */
-        margin-right: 5px;
-        padding-top: 30px;
+      margin-left: 280px;
+      padding: 25px;
     }
-
-    .upper-content {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .calender, .headlines, .lower-content {
-        margin-top: 40px;
-        width: 60%; /* Reduce width to allow space for margin */
-        height: auto;
-        margin-left: 10px; /* Add left margin */
-        margin-right: 10px; /* Keep it centered */
-    }
-    .lower-content{
-        margin-right: 65px;
-    }
-}
-
-/* 270 - 380px */
-@media screen and (min-width: 271px) and (max-width: 380px) {
+  }
+  
+  @media screen and (max-width: 950px) {
     .main-content {
-        margin-left: 20px;
-        margin-right: 20px;
-        padding-top: 20px;
+      margin-left: 0px;
+      padding: 20px;
     }
-
+  
     .upper-content {
-        flex-direction: column;
-        align-items: center;
+      flex-direction: column;
     }
-
-    .calender, .headlines, .lower-content {
-        margin-top: 50px;
-        width: 60%;
-        height: auto;
+  
+    .calendar-container,
+    .headlines-container {
+      width: 100%;
     }
-
-    .lower-content {
-        margin-left: 15px;
-        margin-right: 60px;
-    }
-}
-
-/* 380 - 520px */
-@media screen and (min-width: 381px) and (max-width: 520px) {
+  }
+  
+  @media screen and (max-width: 768px) {
     .main-content {
-        margin-left: 20px;
-        margin-right: 20px;
-        padding-top: 30px;
+      margin-left: 0;
+      padding: 15px;
     }
-
-    .upper-content {
-        flex-direction: column;
-        align-items: center;
+  
+    .calendar-container,
+    .headlines-container,
+    .pending-tasks-container {
+      width: 100%;
     }
-
-    .calender, .headlines, .lower-content {
-        margin-top: 50px;
-        width: 90%;
-        height: auto;
+  }
+  
+  /* Dark theme with accent colors */
+  :root {
+    --primary: #3a86ff;
+    --secondary: #ff9f1c;
+    --background: #121212;
+    --card-bg: #1a1a1a;
+    --text: #ffffff;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+  }
+  
+  /* Add some animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
     }
-
-    .lower-content {
-        margin-left: 20px;
-        margin-right: 5px;
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-}
-
-/* 520 - 640px */
-@media screen and (min-width: 521px) and (max-width: 640px) {
-    .main-content {
-        margin-left: 20px;
-        margin-right: 20px;
-        padding-top: 30px;
-    }
-
-    .upper-content {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .calender, .headlines, .lower-content {
-        margin-top: 55px;
-        width: 90%;
-        height: auto;
-    }
-
-    .lower-content {
-        margin-left: 20px;
-        margin-right: 10px;
-    }
-}
-
-/* 640 - 860px */
-@media screen and (min-width: 641px) and (max-width: 860px) {
-    .main-content {
-        margin-left: 30px;
-        margin-right: 30px;
-        padding-top: 30px;
-    }
-
-    .upper-content {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .calender, .headlines, .lower-content {
-        margin-top: 60px;
-        width: 90%;
-        height: auto;
-    }
-
-    .lower-content {
-        margin-left: 30px;
-        margin-right: 20px;
-    }
-}
-
-/* 860 - 1200px */
-@media screen and (min-width: 861px) and (max-width: 950px) {
-    .main-content {
-        margin-left: 330px; /* Account for sidebar */
-        margin-right: 40px;
-        padding-top: 30px;
-    }
-
-    .upper-content {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .calender, .headlines {
-        margin-top: 60px;
-        width: 85%;
-        height: auto;
-    }
-
-    .lower-content {
-        margin-left: 330px;
-        width: 85%;
-        margin-right: 50px;
-    }
-}
+  }
+  
+  .calendar-container {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .headlines-container {
+    animation: fadeIn 0.5s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+  
+  .pending-tasks-container {
+    animation: fadeIn 0.5s ease-out 0.4s forwards;
+    opacity: 0;
+  }
+  

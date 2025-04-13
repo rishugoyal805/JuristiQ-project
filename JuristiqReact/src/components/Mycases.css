@@ -117,7 +117,7 @@ select {
   align-items: center;
   justify-content: center;
 }
-  
+
 table {
   margin-left: 300px;
   margin-top: 20px;
@@ -129,7 +129,7 @@ table {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: absolute;
-  left: 5px;  
+  left: 5px;
   top: 5px;
 }
 thead {
@@ -187,6 +187,90 @@ tbody tr:hover {
   background: #b22222;
 }
 
+/* Empty State */
+.empty-cases-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 16rem;
+  background-color: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  padding: 32px;
+  width: 77%;
+  margin-left: 300px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.empty-cases-icon-container {
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.empty-cases-icon {
+  height: 32px;
+  width: 32px;
+  color: #6b7280;
+}
+
+.empty-cases-state h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.empty-cases-state p {
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.add-first-client-btn {
+  padding: 8px 16px;
+  background-color: #111827;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-first-client-btn:hover {
+  background-color: #1f2937;
+}
+
+/* Loading State */
+.loading-cases-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16rem;
+  width: 77%;
+  margin-left: 300px;
+  margin-top: 20px;
+}
+
+.loading-cases-spinner {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid #e5e7eb;
+  border-top-color: #111827;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Responsive Media Queries */
 
 /* Extra Small Devices (phones, 320px and down) */
@@ -211,13 +295,17 @@ tbody tr:hover {
     font-size: 14px;
   }
 
-
   .edit-btn,
   .delete-btn {
     padding: 4px 8px;
     font-size: 12px;
   }
 
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-left: 5px;
+    width: 90%;
+  }
 }
 
 /* Small Devices (phones, 321px to 576px) */
@@ -225,6 +313,12 @@ tbody tr:hover {
   .case-form {
     width: 90%;
     padding: 15px;
+  }
+
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-left: 5px;
+    width: 90%;
   }
 }
 
@@ -234,6 +328,11 @@ tbody tr:hover {
     width: 80%;
   }
 
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-left: 10px;
+    width: 90%;
+  }
 }
 
 /* Large Devices (desktops, 769px to 992px) */
@@ -242,7 +341,11 @@ tbody tr:hover {
     width: 60%;
   }
 
-  
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-left: 10px;
+    width: 95%;
+  }
 }
 
 /* Extra Large Devices (large desktops, 993px and up) */
@@ -250,11 +353,7 @@ tbody tr:hover {
   .case-form {
     width: 40%;
   }
-
- 
 }
-
-
 
 /* Landscape orientation adjustments */
 @media (min-height: 770px) and (max-width: 950px) {
@@ -304,50 +403,60 @@ tbody tr:hover {
 }
 
 @media (max-width: 270px) {
-   
-  table {
-       margin-top: 70px;
-       margin-left: 5px;
-       width: 75%;
-       margin-right: 10px;
-   }
-   thead th, tbody td {
-       font-size: 12px;
-   }
+  table,
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-top: 70px;
+    margin-left: 5px;
+    width: 75%;
+    margin-right: 10px;
+  }
+  thead th,
+  tbody td {
+    font-size: 12px;
+  }
 }
 
 @media (min-width: 271px) and (max-width: 520px) {
-   table {
-       margin-top: 70px;
-       margin-left: 5px;
-       width: 85%;
-       font-size: 14px;
-   }
-   thead th, tbody td {
-       font-size: 14px;
-   }
+  table,
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-top: 70px;
+    margin-left: 5px;
+    width: 85%;
+    font-size: 14px;
+  }
+  thead th,
+  tbody td {
+    font-size: 14px;
+  }
 }
 
 @media (min-width: 521px) and (max-width: 860px) {
-   table {
-       margin-top: 70px;
-       margin-left: 10px;
-       width: 90%;
- 
-   }
-   thead th, tbody td {
-       font-size: 13px;
-   }
+  table,
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-top: 70px;
+    margin-left: 10px;
+    width: 90%;
+  }
+  thead th,
+  tbody td {
+    font-size: 13px;
+  }
 }
 
 @media (min-width: 861px) and (max-width: 950px) {
-   table {
-       margin-top: 70px;
-       margin-left: 10px;
-       width: 95%;
-       font-size: 16px;
-   }
-   thead th, tbody td {
-       font-size: 16px;
-   }
+  table,
+  .empty-cases-state,
+  .loading-cases-container {
+    margin-top: 70px;
+    margin-left: 10px;
+    width: 95%;
+    font-size: 16px;
+  }
+  thead th,
+  tbody td {
+    font-size: 16px;
+  }
 }
