@@ -9,6 +9,7 @@ function Clients() {
   const [showForm, setShowForm] = useState(false)
   const [clients, setClients] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
 
   useEffect(() => {
     fetchClients()
@@ -17,7 +18,7 @@ function Clients() {
   const fetchClients = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.get("http://localhost:3000/clients", {
+      const response = await axios.get(`${API}/clients`, {
         withCredentials: true})
       console.log("Fetched Clients:", response.data)
       setClients(response.data)
@@ -38,7 +39,7 @@ function Clients() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/createclient", newClient, {
+      const response = await axios.post(`${API}/createclient`, newClient, {
         withCredentials: true})
       console.log("New Client Added:", response.data)
 

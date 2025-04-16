@@ -11,6 +11,7 @@ function Fees() {
   const [fees, setFees] = useState([])
   const [editingFee, setEditingFee] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
 
   useEffect(() => {
     fetchFees()
@@ -19,7 +20,7 @@ function Fees() {
   const fetchFees = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.get("http://localhost:3000/getfees", { withCredentials: true })
+      const response = await axios.get(`${API}/getfees`, { withCredentials: true })
       setFees(response.data)
     } catch (error) {
       console.error("Error fetching fees:", error)
@@ -60,9 +61,9 @@ function Fees() {
 
     try {
       if (editingFee) {
-        await axios.put(`http://localhost:3000/updatefee/${editingFee._id}`, feeData)
+        await axios.put(`${API}/updatefee/${editingFee._id}`, feeData)
       } else {
-        await axios.post("http://localhost:3000/createfee", feeData, { withCredentials: true })
+        await axios.post(`${API}/createfee`, feeData, { withCredentials: true })
       }
       setShowForm(false)
       fetchFees()
@@ -75,7 +76,7 @@ function Fees() {
   const handleDelete = async (fee) => {
     if (!window.confirm("Are you sure you want to delete this fee record?")) return
     try {
-      await axios.delete(`http://localhost:3000/deletefee/${fee._id}`)
+      await axios.delete(`${API}/deletefee/${fee._id}`)
       fetchFees()
     } catch (error) {
       console.error("Error deleting fee record:", error)

@@ -11,6 +11,7 @@ function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
 
   const handleSignIn = async (e) => {
     e.preventDefault()
@@ -20,7 +21,7 @@ function LoginPage() {
     try {
 
       const response = await axios.post(
-        "http://localhost:3000/login",
+        `${API}/login`,
         { email, password },
         { withCredentials: true } // To handle cookies (JWT authentication)
       );

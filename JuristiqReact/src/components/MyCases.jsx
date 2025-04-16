@@ -12,6 +12,9 @@ function MyCases() {
   const [editingCase, setEditingCase] = useState(null) // Track the case being edited
   const [isLoading, setIsLoading] = useState(true)
 
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
+
+
   useEffect(() => {
     fetchCases()
   }, [])
@@ -19,7 +22,7 @@ function MyCases() {
   const fetchCases = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.get("http://localhost:3000/getcases", {
+      const response = await axios.get(`${API}/getcases`, {
         withCredentials: true, // Ensures cookies are sent
       })
 
@@ -61,10 +64,10 @@ function MyCases() {
     try {
       if (editingCase) {
         // Update Case (PUT request)
-        await axios.put(`http://localhost:3000/updatecase/${editingCase.case_ref_no}`, newCase)
+        await axios.put(`${API}/updatecase/${editingCase.case_ref_no}`, newCase)
       } else {
         // Add New Case (POST request)
-        await axios.post("http://localhost:3000/createcase", newCase, { withCredentials: true })
+        await axios.post(`${API}/createcase`, newCase, { withCredentials: true })
       }
 
       // Reset the form and fetch updated data
@@ -82,7 +85,7 @@ function MyCases() {
     if (!window.confirm("Are you sure you want to delete this case?")) return
 
     try {
-      await axios.delete(`http://localhost:3000/deletecase/${case_ref_no}`)
+      await axios.delete(`${API}/deletecase/${case_ref_no}`)
       fetchCases() // Refresh table after delete
     } catch (error) {
       console.error("Error deleting case:", error)

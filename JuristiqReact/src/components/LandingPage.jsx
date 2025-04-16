@@ -8,6 +8,7 @@ function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [feedbackForm, showFeedbackForm] = useState(false);
   const [feedbackData, setFeedbackData] = useState({ email: "", feedback: "" });
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +34,7 @@ function LandingPage() {
   const handleFeedbackSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/feedback", feedbackData);
+      await axios.post(`${API}/feedback`, feedbackData);
       alert("Feedback submitted successfully");
       setFeedbackData({ email: "", feedback: "" });
       showFeedbackForm(false);

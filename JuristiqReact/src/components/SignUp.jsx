@@ -13,13 +13,14 @@ function SignUp() {
   const [otp, setOtp] = useState("")
   const [otpSent, setOtpSent] = useState(false)
   const [otpVerified, setOtpVerified] = useState(false)
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
 
   const navigate = useNavigate()
 
   // Send OTP to user's email
   const handleEmailSubmit = async () => {
     try {
-      await axios.post("http://localhost:3000/advocate", { email })
+      await axios.post(`${API}/advocate`, { email })
       setOtpSent(true)
       alert("OTP sent to your email!")
     } catch (error) {
@@ -31,7 +32,7 @@ function SignUp() {
   // Verify OTP
   const handleOtpSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/verifyotp", { email, otp })
+      const response = await axios.post(`${API}/verifyotp`, { email, otp })
       if (response.status === 200) {
         setOtpVerified(true)
         alert("OTP Verified! You can now create a password.")
@@ -52,7 +53,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/register", {
+      const response = await axios.post(`${API}/register`, {
         name,
         email,
         password,

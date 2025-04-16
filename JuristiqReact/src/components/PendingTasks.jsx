@@ -3,11 +3,12 @@ import axios from "axios";
 
 function PendingTasks() {
   const [pendingCases, setPendingCases] = useState([]);
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
 
   useEffect(() => {
     const fetchPendingCases = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/pendingcases", { withCredentials: true });
+        const response = await axios.get(`${API}/pendingcases`, { withCredentials: true });
         setPendingCases(response.data);
       } catch (error) {
         console.error("Error fetching pending cases:", error);

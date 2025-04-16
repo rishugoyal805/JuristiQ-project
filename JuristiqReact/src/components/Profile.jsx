@@ -15,6 +15,7 @@ function Profile() {
     profilePic: "",
   })
   const [editMode, setEditMode] = useState(false)
+  const API = import.meta.env.REACT_APP_API_URL // if using Vite
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +26,7 @@ function Profile() {
   }, [])
   const fetchProfile = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/profile", { 
+      const response = await axios.get(`${API}/profile`, { 
         withCredentials: true 
       });
   
@@ -38,7 +39,7 @@ function Profile() {
   
   const fetchCaseStatistics = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/getcases",{withCredentials:true})
+      const response = await axios.get(`${API}/getcases`,{withCredentials:true})
       const cases = response.data
       const casesHandled = cases.length
       const casesWon = cases.filter((c) => c.status.toLowerCase() === "won").length
@@ -55,7 +56,7 @@ function Profile() {
 
   const handleUpdate = async () => {
     try {
-      await axios.put("http://localhost:3000/updateProfile", advocate, { withCredentials: true })
+      await axios.put(`${API}/updateProfile`, advocate, { withCredentials: true })
       alert("Profile updated successfully!")
       setEditMode(false)
       fetchProfile()
